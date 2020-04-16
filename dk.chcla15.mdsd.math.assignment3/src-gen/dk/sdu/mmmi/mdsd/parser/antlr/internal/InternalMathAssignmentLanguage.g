@@ -76,28 +76,82 @@ ruleMathExp returns [EObject current=null]
 	leaveRule();
 }:
 	(
+		(
+			{
+				newCompositeNode(grammarAccess.getMathExpAccess().getResultStatementsResultStatementParserRuleCall_0());
+			}
+			lv_resultStatements_0_0=ruleResultStatement
+			{
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getMathExpRule());
+				}
+				add(
+					$current,
+					"resultStatements",
+					lv_resultStatements_0_0,
+					"dk.sdu.mmmi.mdsd.MathAssignmentLanguage.ResultStatement");
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)+
+;
+
+// Entry rule entryRuleResultStatement
+entryRuleResultStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getResultStatementRule()); }
+	iv_ruleResultStatement=ruleResultStatement
+	{ $current=$iv_ruleResultStatement.current; }
+	EOF;
+
+// Rule ResultStatement
+ruleResultStatement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
 		otherlv_0='result'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getMathExpAccess().getResultKeyword_0());
+			newLeafNode(otherlv_0, grammarAccess.getResultStatementAccess().getResultKeyword_0());
 		}
-		otherlv_1='is'
+		(
+			(
+				lv_label_1_0=RULE_STRING
+				{
+					newLeafNode(lv_label_1_0, grammarAccess.getResultStatementAccess().getLabelSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getResultStatementRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"label",
+						lv_label_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_2='is'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getMathExpAccess().getIsKeyword_1());
+			newLeafNode(otherlv_2, grammarAccess.getResultStatementAccess().getIsKeyword_2());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getMathExpAccess().getExpExpParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getResultStatementAccess().getExpExpParserRuleCall_3_0());
 				}
-				lv_exp_2_0=ruleExp
+				lv_exp_3_0=ruleExp
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getMathExpRule());
+						$current = createModelElementForParent(grammarAccess.getResultStatementRule());
 					}
 					set(
 						$current,
 						"exp",
-						lv_exp_2_0,
+						lv_exp_3_0,
 						"dk.sdu.mmmi.mdsd.MathAssignmentLanguage.Exp");
 					afterParserOrEnumRuleCall();
 				}

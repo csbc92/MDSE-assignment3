@@ -81,6 +81,11 @@ public class MathAssignmentLanguageAdapterFactory extends AdapterFactoryImpl
         return createMathExpAdapter();
       }
       @Override
+      public Adapter caseResultStatement(ResultStatement object)
+      {
+        return createResultStatementAdapter();
+      }
+      @Override
       public Adapter caseExpression(Expression object)
       {
         return createExpressionAdapter();
@@ -153,6 +158,21 @@ public class MathAssignmentLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMathExpAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement <em>Result Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement
+   * @generated
+   */
+  public Adapter createResultStatementAdapter()
   {
     return null;
   }

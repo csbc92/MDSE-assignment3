@@ -3,18 +3,23 @@
  */
 package dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl;
 
-import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Expression;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 
-import org.eclipse.emf.common.notify.Notification;
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +29,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathExpImpl#getExp <em>Exp</em>}</li>
+ *   <li>{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathExpImpl#getResultStatements <em>Result Statements</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,14 +37,14 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
 {
   /**
-   * The cached value of the '{@link #getExp() <em>Exp</em>}' containment reference.
+   * The cached value of the '{@link #getResultStatements() <em>Result Statements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getExp()
+   * @see #getResultStatements()
    * @generated
    * @ordered
    */
-  protected Expression exp;
+  protected EList<ResultStatement> resultStatements;
 
   /**
    * <!-- begin-user-doc -->
@@ -68,48 +73,13 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
    * @generated
    */
   @Override
-  public Expression getExp()
+  public EList<ResultStatement> getResultStatements()
   {
-    return exp;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetExp(Expression newExp, NotificationChain msgs)
-  {
-    Expression oldExp = exp;
-    exp = newExp;
-    if (eNotificationRequired())
+    if (resultStatements == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MathAssignmentLanguagePackage.MATH_EXP__EXP, oldExp, newExp);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      resultStatements = new EObjectContainmentEList<ResultStatement>(ResultStatement.class, this, MathAssignmentLanguagePackage.MATH_EXP__RESULT_STATEMENTS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setExp(Expression newExp)
-  {
-    if (newExp != exp)
-    {
-      NotificationChain msgs = null;
-      if (exp != null)
-        msgs = ((InternalEObject)exp).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MathAssignmentLanguagePackage.MATH_EXP__EXP, null, msgs);
-      if (newExp != null)
-        msgs = ((InternalEObject)newExp).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MathAssignmentLanguagePackage.MATH_EXP__EXP, null, msgs);
-      msgs = basicSetExp(newExp, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MathAssignmentLanguagePackage.MATH_EXP__EXP, newExp, newExp));
+    return resultStatements;
   }
 
   /**
@@ -122,8 +92,8 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
   {
     switch (featureID)
     {
-      case MathAssignmentLanguagePackage.MATH_EXP__EXP:
-        return basicSetExp(null, msgs);
+      case MathAssignmentLanguagePackage.MATH_EXP__RESULT_STATEMENTS:
+        return ((InternalEList<?>)getResultStatements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -138,8 +108,8 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
   {
     switch (featureID)
     {
-      case MathAssignmentLanguagePackage.MATH_EXP__EXP:
-        return getExp();
+      case MathAssignmentLanguagePackage.MATH_EXP__RESULT_STATEMENTS:
+        return getResultStatements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -149,13 +119,15 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case MathAssignmentLanguagePackage.MATH_EXP__EXP:
-        setExp((Expression)newValue);
+      case MathAssignmentLanguagePackage.MATH_EXP__RESULT_STATEMENTS:
+        getResultStatements().clear();
+        getResultStatements().addAll((Collection<? extends ResultStatement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -171,8 +143,8 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
   {
     switch (featureID)
     {
-      case MathAssignmentLanguagePackage.MATH_EXP__EXP:
-        setExp((Expression)null);
+      case MathAssignmentLanguagePackage.MATH_EXP__RESULT_STATEMENTS:
+        getResultStatements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -188,8 +160,8 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
   {
     switch (featureID)
     {
-      case MathAssignmentLanguagePackage.MATH_EXP__EXP:
-        return exp != null;
+      case MathAssignmentLanguagePackage.MATH_EXP__RESULT_STATEMENTS:
+        return resultStatements != null && !resultStatements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

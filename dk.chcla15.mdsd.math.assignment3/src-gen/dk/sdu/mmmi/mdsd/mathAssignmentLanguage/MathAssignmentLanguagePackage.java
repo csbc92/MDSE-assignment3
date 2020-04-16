@@ -68,13 +68,13 @@ public interface MathAssignmentLanguagePackage extends EPackage
   int MATH_EXP = 0;
 
   /**
-   * The feature id for the '<em><b>Exp</b></em>' containment reference.
+   * The feature id for the '<em><b>Result Statements</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MATH_EXP__EXP = 0;
+  int MATH_EXP__RESULT_STATEMENTS = 0;
 
   /**
    * The number of structural features of the '<em>Math Exp</em>' class.
@@ -86,6 +86,43 @@ public interface MathAssignmentLanguagePackage extends EPackage
   int MATH_EXP_FEATURE_COUNT = 1;
 
   /**
+   * The meta object id for the '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.ResultStatementImpl <em>Result Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.ResultStatementImpl
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getResultStatement()
+   * @generated
+   */
+  int RESULT_STATEMENT = 1;
+
+  /**
+   * The feature id for the '<em><b>Label</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESULT_STATEMENT__LABEL = 0;
+
+  /**
+   * The feature id for the '<em><b>Exp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESULT_STATEMENT__EXP = 1;
+
+  /**
+   * The number of structural features of the '<em>Result Statement</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESULT_STATEMENT_FEATURE_COUNT = 2;
+
+  /**
    * The meta object id for the '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.ExpressionImpl <em>Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -93,7 +130,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 1;
+  int EXPRESSION = 2;
 
   /**
    * The number of structural features of the '<em>Expression</em>' class.
@@ -112,7 +149,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getPlus()
    * @generated
    */
-  int PLUS = 2;
+  int PLUS = 3;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -149,7 +186,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getMinus()
    * @generated
    */
-  int MINUS = 3;
+  int MINUS = 4;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -186,7 +223,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getMult()
    * @generated
    */
-  int MULT = 4;
+  int MULT = 5;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -223,7 +260,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getDiv()
    * @generated
    */
-  int DIV = 5;
+  int DIV = 6;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -260,7 +297,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getVar()
    * @generated
    */
-  int VAR = 6;
+  int VAR = 7;
 
   /**
    * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -288,7 +325,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getLet()
    * @generated
    */
-  int LET = 7;
+  int LET = 8;
 
   /**
    * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -334,7 +371,7 @@ public interface MathAssignmentLanguagePackage extends EPackage
    * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getNum()
    * @generated
    */
-  int NUM = 8;
+  int NUM = 9;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -366,15 +403,47 @@ public interface MathAssignmentLanguagePackage extends EPackage
   EClass getMathExp();
 
   /**
-   * Returns the meta object for the containment reference '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getExp <em>Exp</em>}'.
+   * Returns the meta object for the containment reference list '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getResultStatements <em>Result Statements</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Exp</em>'.
-   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getExp()
+   * @return the meta object for the containment reference list '<em>Result Statements</em>'.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getResultStatements()
    * @see #getMathExp()
    * @generated
    */
-  EReference getMathExp_Exp();
+  EReference getMathExp_ResultStatements();
+
+  /**
+   * Returns the meta object for class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement <em>Result Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Result Statement</em>'.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement
+   * @generated
+   */
+  EClass getResultStatement();
+
+  /**
+   * Returns the meta object for the attribute '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement#getLabel <em>Label</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Label</em>'.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement#getLabel()
+   * @see #getResultStatement()
+   * @generated
+   */
+  EAttribute getResultStatement_Label();
+
+  /**
+   * Returns the meta object for the containment reference '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement#getExp <em>Exp</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Exp</em>'.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement#getExp()
+   * @see #getResultStatement()
+   * @generated
+   */
+  EReference getResultStatement_Exp();
 
   /**
    * Returns the meta object for class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Expression <em>Expression</em>}'.
@@ -633,12 +702,38 @@ public interface MathAssignmentLanguagePackage extends EPackage
     EClass MATH_EXP = eINSTANCE.getMathExp();
 
     /**
+     * The meta object literal for the '<em><b>Result Statements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MATH_EXP__RESULT_STATEMENTS = eINSTANCE.getMathExp_ResultStatements();
+
+    /**
+     * The meta object literal for the '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.ResultStatementImpl <em>Result Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.ResultStatementImpl
+     * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.MathAssignmentLanguagePackageImpl#getResultStatement()
+     * @generated
+     */
+    EClass RESULT_STATEMENT = eINSTANCE.getResultStatement();
+
+    /**
+     * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute RESULT_STATEMENT__LABEL = eINSTANCE.getResultStatement_Label();
+
+    /**
      * The meta object literal for the '<em><b>Exp</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MATH_EXP__EXP = eINSTANCE.getMathExp_Exp();
+    EReference RESULT_STATEMENT__EXP = eINSTANCE.getResultStatement_Exp();
 
     /**
      * The meta object literal for the '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl.ExpressionImpl <em>Expression</em>}' class.

@@ -33,6 +33,15 @@ public interface MathAssignmentLanguageFactory extends EFactory
   MathExp createMathExp();
 
   /**
+   * Returns a new object of class '<em>Result Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Result Statement</em>'.
+   * @generated
+   */
+  ResultStatement createResultStatement();
+
+  /**
    * Returns a new object of class '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

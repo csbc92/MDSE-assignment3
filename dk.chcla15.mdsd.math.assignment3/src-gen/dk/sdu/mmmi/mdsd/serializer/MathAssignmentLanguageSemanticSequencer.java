@@ -12,6 +12,7 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Minus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
 import dk.sdu.mmmi.mdsd.services.MathAssignmentLanguageGrammarAccess;
 import java.util.Set;
@@ -59,6 +60,9 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 				return; 
 			case MathAssignmentLanguagePackage.PLUS:
 				sequence_Exp(context, (Plus) semanticObject); 
+				return; 
+			case MathAssignmentLanguagePackage.RESULT_STATEMENT:
+				sequence_ResultStatement(context, (ResultStatement) semanticObject); 
 				return; 
 			case MathAssignmentLanguagePackage.VAR:
 				sequence_VariableUse(context, (Var) semanticObject); 
@@ -185,16 +189,10 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 	 *     MathExp returns MathExp
 	 *
 	 * Constraint:
-	 *     exp=Exp
+	 *     resultStatements+=ResultStatement+
 	 */
 	protected void sequence_MathExp(ISerializationContext context, MathExp semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MathAssignmentLanguagePackage.Literals.MATH_EXP__EXP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathAssignmentLanguagePackage.Literals.MATH_EXP__EXP));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getMathExpAccess().getExpExpParserRuleCall_2_0(), semanticObject.getExp());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -220,6 +218,27 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getNumberAccess().getValueINTTerminalRuleCall_1_0(), semanticObject.getValue());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ResultStatement returns ResultStatement
+	 *
+	 * Constraint:
+	 *     (label=STRING exp=Exp)
+	 */
+	protected void sequence_ResultStatement(ISerializationContext context, ResultStatement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MathAssignmentLanguagePackage.Literals.RESULT_STATEMENT__LABEL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathAssignmentLanguagePackage.Literals.RESULT_STATEMENT__LABEL));
+			if (transientValues.isValueTransient(semanticObject, MathAssignmentLanguagePackage.Literals.RESULT_STATEMENT__EXP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathAssignmentLanguagePackage.Literals.RESULT_STATEMENT__EXP));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getResultStatementAccess().getLabelSTRINGTerminalRuleCall_1_0(), semanticObject.getLabel());
+		feeder.accept(grammarAccess.getResultStatementAccess().getExpExpParserRuleCall_3_0(), semanticObject.getExp());
 		feeder.finish();
 	}
 	

@@ -3,7 +3,11 @@ grammar dk.sdu.mmmi.mdsd.MathAssignmentLanguage with org.eclipse.xtext.common.Te
 generate mathAssignmentLanguage "http://www.sdu.dk/mmmi/mdsd/MathAssignmentLanguage"
 
 MathExp:
-	'result' 'is' exp=Exp
+	resultStatements+=ResultStatement+
+;
+
+ResultStatement returns ResultStatement:
+	'result' label=STRING 'is' exp=Exp
 ;
 
 Exp returns Expression:

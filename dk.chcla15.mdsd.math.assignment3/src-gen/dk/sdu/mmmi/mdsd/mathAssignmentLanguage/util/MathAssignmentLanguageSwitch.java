@@ -80,6 +80,13 @@ public class MathAssignmentLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MathAssignmentLanguagePackage.RESULT_STATEMENT:
+      {
+        ResultStatement resultStatement = (ResultStatement)theEObject;
+        T result = caseResultStatement(resultStatement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MathAssignmentLanguagePackage.EXPRESSION:
       {
         Expression expression = (Expression)theEObject;
@@ -159,6 +166,22 @@ public class MathAssignmentLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMathExp(MathExp object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Result Statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Result Statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseResultStatement(ResultStatement object)
   {
     return null;
   }

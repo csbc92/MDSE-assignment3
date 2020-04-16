@@ -34,7 +34,7 @@ public class MathAssignmentLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getExpAccess().getAlternatives_1_0(), "rule__Exp__Alternatives_1_0");
 			builder.put(grammarAccess.getFactorAccess().getAlternatives_1_0(), "rule__Factor__Alternatives_1_0");
 			builder.put(grammarAccess.getPrimaryAccess().getAlternatives(), "rule__Primary__Alternatives");
-			builder.put(grammarAccess.getMathExpAccess().getGroup(), "rule__MathExp__Group__0");
+			builder.put(grammarAccess.getResultStatementAccess().getGroup(), "rule__ResultStatement__Group__0");
 			builder.put(grammarAccess.getExpAccess().getGroup(), "rule__Exp__Group__0");
 			builder.put(grammarAccess.getExpAccess().getGroup_1(), "rule__Exp__Group_1__0");
 			builder.put(grammarAccess.getExpAccess().getGroup_1_0_0(), "rule__Exp__Group_1_0_0__0");
@@ -47,7 +47,9 @@ public class MathAssignmentLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getVariableBindingAccess().getGroup(), "rule__VariableBinding__Group__0");
 			builder.put(grammarAccess.getParenthesisAccess().getGroup(), "rule__Parenthesis__Group__0");
 			builder.put(grammarAccess.getNumberAccess().getGroup(), "rule__Number__Group__0");
-			builder.put(grammarAccess.getMathExpAccess().getExpAssignment_2(), "rule__MathExp__ExpAssignment_2");
+			builder.put(grammarAccess.getMathExpAccess().getResultStatementsAssignment(), "rule__MathExp__ResultStatementsAssignment");
+			builder.put(grammarAccess.getResultStatementAccess().getLabelAssignment_1(), "rule__ResultStatement__LabelAssignment_1");
+			builder.put(grammarAccess.getResultStatementAccess().getExpAssignment_3(), "rule__ResultStatement__ExpAssignment_3");
 			builder.put(grammarAccess.getExpAccess().getRightAssignment_1_1(), "rule__Exp__RightAssignment_1_1");
 			builder.put(grammarAccess.getFactorAccess().getRightAssignment_1_1(), "rule__Factor__RightAssignment_1_1");
 			builder.put(grammarAccess.getVariableUseAccess().getIdAssignment_1(), "rule__VariableUse__IdAssignment_1");

@@ -3,6 +3,8 @@
  */
 package dk.sdu.mmmi.mdsd.mathAssignmentLanguage;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getExp <em>Exp</em>}</li>
+ *   <li>{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getResultStatements <em>Result Statements</em>}</li>
  * </ul>
  *
  * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage#getMathExp()
@@ -24,25 +26,15 @@ import org.eclipse.emf.ecore.EObject;
 public interface MathExp extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Exp</b></em>' containment reference.
+   * Returns the value of the '<em><b>Result Statements</b></em>' containment reference list.
+   * The list contents are of type {@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Exp</em>' containment reference.
-   * @see #setExp(Expression)
-   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage#getMathExp_Exp()
+   * @return the value of the '<em>Result Statements</em>' containment reference list.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage#getMathExp_ResultStatements()
    * @model containment="true"
    * @generated
    */
-  Expression getExp();
-
-  /**
-   * Sets the value of the '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getExp <em>Exp</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Exp</em>' containment reference.
-   * @see #getExp()
-   * @generated
-   */
-  void setExp(Expression value);
+  EList<ResultStatement> getResultStatements();
 
 } // MathExp

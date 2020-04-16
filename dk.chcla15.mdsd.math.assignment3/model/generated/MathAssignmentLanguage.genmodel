@@ -7,7 +7,11 @@
   <genPackages prefix="MathAssignmentLanguage" basePackage="dk.sdu.mmmi.mdsd" disposableProviderFactory="true"
       fileExtensions="mathexp" ecorePackage="MathAssignmentLanguage.ecore#/">
     <genClasses ecoreClass="MathAssignmentLanguage.ecore#//MathExp">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//MathExp/exp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//MathExp/resultStatements"/>
+    </genClasses>
+    <genClasses ecoreClass="MathAssignmentLanguage.ecore#//ResultStatement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//ResultStatement/label"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//ResultStatement/exp"/>
     </genClasses>
     <genClasses ecoreClass="MathAssignmentLanguage.ecore#//Expression"/>
     <genClasses ecoreClass="MathAssignmentLanguage.ecore#//Plus">

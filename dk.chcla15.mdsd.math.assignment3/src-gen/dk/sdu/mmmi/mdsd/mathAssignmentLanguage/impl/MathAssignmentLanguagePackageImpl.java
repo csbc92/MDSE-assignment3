@@ -13,6 +13,7 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Minus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -36,6 +37,13 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
    * @generated
    */
   private EClass mathExpEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass resultStatementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -173,9 +181,42 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
    * @generated
    */
   @Override
-  public EReference getMathExp_Exp()
+  public EReference getMathExp_ResultStatements()
   {
     return (EReference)mathExpEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getResultStatement()
+  {
+    return resultStatementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getResultStatement_Label()
+  {
+    return (EAttribute)resultStatementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getResultStatement_Exp()
+  {
+    return (EReference)resultStatementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -441,7 +482,11 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
 
     // Create classes and their features
     mathExpEClass = createEClass(MATH_EXP);
-    createEReference(mathExpEClass, MATH_EXP__EXP);
+    createEReference(mathExpEClass, MATH_EXP__RESULT_STATEMENTS);
+
+    resultStatementEClass = createEClass(RESULT_STATEMENT);
+    createEAttribute(resultStatementEClass, RESULT_STATEMENT__LABEL);
+    createEReference(resultStatementEClass, RESULT_STATEMENT__EXP);
 
     expressionEClass = createEClass(EXPRESSION);
 
@@ -512,7 +557,11 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
 
     // Initialize classes and features; add operations and parameters
     initEClass(mathExpEClass, MathExp.class, "MathExp", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMathExp_Exp(), this.getExpression(), null, "exp", null, 0, 1, MathExp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMathExp_ResultStatements(), this.getResultStatement(), null, "resultStatements", null, 0, -1, MathExp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(resultStatementEClass, ResultStatement.class, "ResultStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getResultStatement_Label(), ecorePackage.getEString(), "label", null, 0, 1, ResultStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getResultStatement_Exp(), this.getExpression(), null, "exp", null, 0, 1, ResultStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

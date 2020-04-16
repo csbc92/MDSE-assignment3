@@ -19,6 +19,7 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Div
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Let
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement
 
 /**
  * Generates code from your model files on save.
@@ -30,9 +31,14 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		
 		val math = resource.allContents.filter(MathExp).next
-		val result = math.compute
-		System.out.println("Math expression = "+math.display)
-		JOptionPane.showMessageDialog(null, "result = "+result,"Math Language", JOptionPane.INFORMATION_MESSAGE)
+		val results = math.compute
+		System.out.println("Math expressions = \n" + math.display)
+		JOptionPane.showMessageDialog(null, results.prettyPrint,"Math Language", JOptionPane.INFORMATION_MESSAGE)
+		
+		//val math = resource.allContents.filter(MathExp).next
+		//val result = math.compute
+		//System.out.println("Math expression = "+math.display)
+		//JOptionPane.showMessageDialog(null, "result = "+result,"Math Language", JOptionPane.INFORMATION_MESSAGE)
 		
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
 //			resource.allContents
@@ -41,14 +47,47 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 //				.join(', '))
 	}
 	
+	def compute(MathExp math) {
+		val results = new HashMap<ResultStatement, Integer>
+		
+		math.resultStatements.forEach[ r | {
+			results.put(r, r.exp.computeExp(new HashMap<String, Integer>))
+		}]
+		
+		return results
+	}
+	
+	def prettyPrint(HashMap<ResultStatement, Integer> map) {
+		val displayStrings = new StringBuilder
+		
+		map.forEach[r, i| {
+			displayStrings.append("result \"" + r.label + "\" is " +
+				i + "\n"
+			)
+		}]
+		
+		return displayStrings.toString
+	}
+	
+	def display(MathExp math) {
+		val displayStrings = new StringBuilder
+		
+		math.resultStatements.forEach[ r | {
+			displayStrings.append(r.exp.displayExp() + "\n"
+			)
+		}]
+		
+		return displayStrings.toString
+	}
+	
 	//
 	// Compute function: computes value of expression
 	// Note: written according to illegal left-recursive grammar, requires fix
 	//
 	
-	def int compute(MathExp math) { 
-		math.exp.computeExp(new HashMap<String,Integer>)
-	}
+	//def int compute(MathExp math) {
+	//	math.exp.computeExp(new HashMap<String,Integer>)
+	//}
 	
 	def int computeExp(Expression exp, Map<String,Integer> env) {
 		switch exp {
@@ -74,9 +113,10 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	// Note: written according to illegal left-recursive grammar, requires fix
 	//
 
-	def String display(MathExp math) { 
-		math.exp.displayExp
-	}
+	//def String display(MathExp math) { 
+	//	math.exp.displayExp
+	//}
+
 	
 	def String displayExp(Expression exp) {
 		"("+switch exp {

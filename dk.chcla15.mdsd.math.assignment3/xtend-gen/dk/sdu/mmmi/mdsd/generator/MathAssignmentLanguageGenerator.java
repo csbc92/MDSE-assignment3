@@ -12,9 +12,12 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Minus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -32,17 +35,47 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     final MathExp math = Iterators.<MathExp>filter(resource.getAllContents(), MathExp.class).next();
-    final int result = this.compute(math);
+    final HashMap<ResultStatement, Integer> results = this.compute(math);
     String _display = this.display(math);
-    String _plus = ("Math expression = " + _display);
+    String _plus = ("Math expressions = \n" + _display);
     System.out.println(_plus);
-    JOptionPane.showMessageDialog(null, ("result = " + Integer.valueOf(result)), "Math Language", JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null, this.prettyPrint(results), "Math Language", JOptionPane.INFORMATION_MESSAGE);
   }
   
-  public int compute(final MathExp math) {
-    Expression _exp = math.getExp();
-    HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
-    return this.computeExp(_exp, _hashMap);
+  public HashMap<ResultStatement, Integer> compute(final MathExp math) {
+    final HashMap<ResultStatement, Integer> results = new HashMap<ResultStatement, Integer>();
+    final Consumer<ResultStatement> _function = (ResultStatement r) -> {
+      Expression _exp = r.getExp();
+      HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
+      results.put(r, Integer.valueOf(this.computeExp(_exp, _hashMap)));
+    };
+    math.getResultStatements().forEach(_function);
+    return results;
+  }
+  
+  public String prettyPrint(final HashMap<ResultStatement, Integer> map) {
+    final StringBuilder displayStrings = new StringBuilder();
+    final BiConsumer<ResultStatement, Integer> _function = (ResultStatement r, Integer i) -> {
+      String _label = r.getLabel();
+      String _plus = ("result \"" + _label);
+      String _plus_1 = (_plus + "\" is ");
+      String _plus_2 = (_plus_1 + i);
+      String _plus_3 = (_plus_2 + "\n");
+      displayStrings.append(_plus_3);
+    };
+    map.forEach(_function);
+    return displayStrings.toString();
+  }
+  
+  public String display(final MathExp math) {
+    final StringBuilder displayStrings = new StringBuilder();
+    final Consumer<ResultStatement> _function = (ResultStatement r) -> {
+      String _displayExp = this.displayExp(r.getExp());
+      String _plus = (_displayExp + "\n");
+      displayStrings.append(_plus);
+    };
+    math.getResultStatements().forEach(_function);
+    return displayStrings.toString();
   }
   
   public int computeExp(final Expression exp, final Map<String, Integer> env) {
@@ -110,10 +143,6 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       _xblockexpression = env2;
     }
     return _xblockexpression;
-  }
-  
-  public String display(final MathExp math) {
-    return this.displayExp(math.getExp());
   }
   
   public String displayExp(final Expression exp) {

@@ -25,30 +25,53 @@ public class MathAssignmentLanguageGrammarAccess extends AbstractGrammarElementF
 	
 	public class MathExpElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "dk.sdu.mmmi.mdsd.MathAssignmentLanguage.MathExp");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cResultKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Keyword cIsKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cExpAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cExpExpParserRuleCall_2_0 = (RuleCall)cExpAssignment_2.eContents().get(0);
+		private final Assignment cResultStatementsAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cResultStatementsResultStatementParserRuleCall_0 = (RuleCall)cResultStatementsAssignment.eContents().get(0);
 		
 		//MathExp:
-		//	'result' 'is' exp=Exp;
+		//	resultStatements+=ResultStatement+;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'result' 'is' exp=Exp
+		//resultStatements+=ResultStatement+
+		public Assignment getResultStatementsAssignment() { return cResultStatementsAssignment; }
+		
+		//ResultStatement
+		public RuleCall getResultStatementsResultStatementParserRuleCall_0() { return cResultStatementsResultStatementParserRuleCall_0; }
+	}
+	public class ResultStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "dk.sdu.mmmi.mdsd.MathAssignmentLanguage.ResultStatement");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cResultKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cLabelAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cLabelSTRINGTerminalRuleCall_1_0 = (RuleCall)cLabelAssignment_1.eContents().get(0);
+		private final Keyword cIsKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cExpAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cExpExpParserRuleCall_3_0 = (RuleCall)cExpAssignment_3.eContents().get(0);
+		
+		//ResultStatement:
+		//	'result' label=STRING 'is' exp=Exp;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'result' label=STRING 'is' exp=Exp
 		public Group getGroup() { return cGroup; }
 		
 		//'result'
 		public Keyword getResultKeyword_0() { return cResultKeyword_0; }
 		
+		//label=STRING
+		public Assignment getLabelAssignment_1() { return cLabelAssignment_1; }
+		
+		//STRING
+		public RuleCall getLabelSTRINGTerminalRuleCall_1_0() { return cLabelSTRINGTerminalRuleCall_1_0; }
+		
 		//'is'
-		public Keyword getIsKeyword_1() { return cIsKeyword_1; }
+		public Keyword getIsKeyword_2() { return cIsKeyword_2; }
 		
 		//exp=Exp
-		public Assignment getExpAssignment_2() { return cExpAssignment_2; }
+		public Assignment getExpAssignment_3() { return cExpAssignment_3; }
 		
 		//Exp
-		public RuleCall getExpExpParserRuleCall_2_0() { return cExpExpParserRuleCall_2_0; }
+		public RuleCall getExpExpParserRuleCall_3_0() { return cExpExpParserRuleCall_3_0; }
 	}
 	public class ExpElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "dk.sdu.mmmi.mdsd.MathAssignmentLanguage.Exp");
@@ -314,6 +337,7 @@ public class MathAssignmentLanguageGrammarAccess extends AbstractGrammarElementF
 	
 	
 	private final MathExpElements pMathExp;
+	private final ResultStatementElements pResultStatement;
 	private final ExpElements pExp;
 	private final FactorElements pFactor;
 	private final PrimaryElements pPrimary;
@@ -332,6 +356,7 @@ public class MathAssignmentLanguageGrammarAccess extends AbstractGrammarElementF
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaTerminals = gaTerminals;
 		this.pMathExp = new MathExpElements();
+		this.pResultStatement = new ResultStatementElements();
 		this.pExp = new ExpElements();
 		this.pFactor = new FactorElements();
 		this.pPrimary = new PrimaryElements();
@@ -369,13 +394,23 @@ public class MathAssignmentLanguageGrammarAccess extends AbstractGrammarElementF
 
 	
 	//MathExp:
-	//	'result' 'is' exp=Exp;
+	//	resultStatements+=ResultStatement+;
 	public MathExpElements getMathExpAccess() {
 		return pMathExp;
 	}
 	
 	public ParserRule getMathExpRule() {
 		return getMathExpAccess().getRule();
+	}
+	
+	//ResultStatement:
+	//	'result' label=STRING 'is' exp=Exp;
+	public ResultStatementElements getResultStatementAccess() {
+		return pResultStatement;
+	}
+	
+	public ParserRule getResultStatementRule() {
+		return getResultStatementAccess().getRule();
 	}
 	
 	//Exp Expression:

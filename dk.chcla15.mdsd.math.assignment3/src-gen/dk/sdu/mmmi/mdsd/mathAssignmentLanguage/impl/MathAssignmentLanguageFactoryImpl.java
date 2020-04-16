@@ -66,6 +66,7 @@ public class MathAssignmentLanguageFactoryImpl extends EFactoryImpl implements M
     switch (eClass.getClassifierID())
     {
       case MathAssignmentLanguagePackage.MATH_EXP: return createMathExp();
+      case MathAssignmentLanguagePackage.RESULT_STATEMENT: return createResultStatement();
       case MathAssignmentLanguagePackage.EXPRESSION: return createExpression();
       case MathAssignmentLanguagePackage.PLUS: return createPlus();
       case MathAssignmentLanguagePackage.MINUS: return createMinus();
@@ -89,6 +90,18 @@ public class MathAssignmentLanguageFactoryImpl extends EFactoryImpl implements M
   {
     MathExpImpl mathExp = new MathExpImpl();
     return mathExp;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ResultStatement createResultStatement()
+  {
+    ResultStatementImpl resultStatement = new ResultStatementImpl();
+    return resultStatement;
   }
 
   /**

@@ -1,1 +1,24 @@
-result is 1+2
+// 7
+result "First value" is
+let myVar = 1+2 in
+	let x = myVar*2 in
+		x + 1
+	end
+end
+
+// 9
+result "Second value" is
+let myVar = 2+2 in
+	let x = myVar*2 in
+		x + 1
+	end
+end
+
+// 11
+result "Third value" is
+let myVar = 3+2 in
+	let x = myVar*2 in
+		x + 1
+	end
+end
+* 1
