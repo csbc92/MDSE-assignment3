@@ -20,6 +20,7 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Let
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement
+import java.util.HashSet
 
 /**
  * Generates code from your model files on save.
@@ -30,21 +31,113 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		
-		val math = resource.allContents.filter(MathExp).next
+		val math = resource.allContents.filter(MathExp).next // Root level of metamodel instance
 		val results = math.compute
 		System.out.println("Math expressions = \n" + math.display)
 		JOptionPane.showMessageDialog(null, results.prettyPrint,"Math Language", JOptionPane.INFORMATION_MESSAGE)
+		
+		fsa.generateFile("MathComputation.java", math.compile)		
+		
+		fsa.generateFile("compileAndRun.sh", 
+			'''
+			#!/bin/bash
+			javac MathComputation.java
+			java MathComputation
+			'''
+		)
+		
 		
 		//val math = resource.allContents.filter(MathExp).next
 		//val result = math.compute
 		//System.out.println("Math expression = "+math.display)
 		//JOptionPane.showMessageDialog(null, "result = "+result,"Math Language", JOptionPane.INFORMATION_MESSAGE)
+	}
+	
+	def compile(MathExp math) {
+		// Name of the generated class
+		val className = "MathComputation"
+		val resultStatements = math.resultStatements
 		
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+		'''
+		/*
+		* NB!
+		* AUTO-GENERATED CODE - DO NOT MODIFY!
+		*/ 
+		public class «className» {
+						
+			/*
+			* Constructors
+			*/
+			public «className»() { }
+			
+			/*
+			* Public methods
+			*/
+			public void compute() {
+				// Call compute on each result-statement
+				«FOR resultStatement : resultStatements»
+				System.out.println("«resultStatement.label» " + compute«resultStatement.label.convertTolegalJavaIdentifier.toFirstUpper»());
+				«ENDFOR»
+			}
+			
+			/*
+			* Result statements
+			*/
+			«FOR resultStatement : resultStatements»
+				«generatePrivateMethod(resultStatement)»
+			«ENDFOR»
+			
+			/*
+			* Main methods
+			*/
+			public static void main(String[] args) {
+				new «className»().compute();
+			}
+		}
+		'''
+	}
+	
+	def String generatePrivateMethod(ResultStatement r) {
+		'''
+		private int compute«r.label.convertTolegalJavaIdentifier.toFirstUpper»() {
+			return «r.exp.compile(new HashMap<String, Integer>)»;
+		}
+		'''
+	}
+	
+	def String convertTolegalJavaIdentifier(String s) {
+		val validChars = "[a-z]|[A-Z]|\\d|[_]"
+		val illegalChars = new HashSet()
+		
+		var validIdentifier = new String(s)
+		
+		// Find illegal chars
+		for (var i = 0; i < s.length(); i++) {
+			val myChar = s.substring(i, i+1);
+			if (!myChar.matches(validChars)) {
+				illegalChars.add(myChar);
+			}
+		}
+		
+		// Remove illegal chars
+		for (String illegalChar : illegalChars) {
+			validIdentifier = validIdentifier.replace(illegalChar, "");
+		}
+		
+		return validIdentifier
+	}
+	
+	def String compile(Expression exp, Map<String,Integer> env) {
+		switch (exp) {
+			Plus: '''«exp.left.computeExp(env)»+«exp.right.computeExp(env)»'''
+			Minus: '''«exp.left.computeExp(env)»-«exp.right.computeExp(env)»'''
+			Mult: '''«exp.left.computeExp(env)»*«exp.right.computeExp(env)»'''
+			Div: '''«exp.left.computeExp(env)»/«exp.right.computeExp(env)»'''
+			Num: '''«exp.value»'''
+			Var: '''«env.get(exp.id)»'''
+			//Let: exp.body.computeExp(env.bind(exp.id,exp.binding.computeExp(env)))
+			default: throw new Error("Invalid expression")
+		}
 	}
 	
 	def compute(MathExp math) {

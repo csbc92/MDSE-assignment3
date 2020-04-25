@@ -15,15 +15,18 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
 
 /**
  * Generates code from your model files on save.
@@ -40,6 +43,243 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     String _plus = ("Math expressions = \n" + _display);
     System.out.println(_plus);
     JOptionPane.showMessageDialog(null, this.prettyPrint(results), "Math Language", JOptionPane.INFORMATION_MESSAGE);
+    fsa.generateFile("MathComputation.java", this.compile(math));
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("#!/bin/bash");
+    _builder.newLine();
+    _builder.append("javac MathComputation.java");
+    _builder.newLine();
+    _builder.append("java MathComputation");
+    _builder.newLine();
+    fsa.generateFile("compileAndRun.sh", _builder);
+  }
+  
+  public CharSequence compile(final MathExp math) {
+    CharSequence _xblockexpression = null;
+    {
+      final String className = "MathComputation";
+      final EList<ResultStatement> resultStatements = math.getResultStatements();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("* NB!");
+      _builder.newLine();
+      _builder.append("* AUTO-GENERATED CODE - DO NOT MODIFY!");
+      _builder.newLine();
+      _builder.append("*/ ");
+      _builder.newLine();
+      _builder.append("public class ");
+      _builder.append(className);
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("* Constructors");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("public ");
+      _builder.append(className, "\t");
+      _builder.append("() { }");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("* Public methods");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("public void compute() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("// Call compute on each result-statement");
+      _builder.newLine();
+      {
+        for(final ResultStatement resultStatement : resultStatements) {
+          _builder.append("\t\t");
+          _builder.append("System.out.println(\"");
+          String _label = resultStatement.getLabel();
+          _builder.append(_label, "\t\t");
+          _builder.append(" \" + compute");
+          String _firstUpper = StringExtensions.toFirstUpper(this.convertTolegalJavaIdentifier(resultStatement.getLabel()));
+          _builder.append(_firstUpper, "\t\t");
+          _builder.append("());");
+          _builder.newLineIfNotEmpty();
+        }
+      }
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("* Result statements");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("*/");
+      _builder.newLine();
+      {
+        for(final ResultStatement resultStatement_1 : resultStatements) {
+          _builder.append("\t");
+          String _generatePrivateMethod = this.generatePrivateMethod(resultStatement_1);
+          _builder.append(_generatePrivateMethod, "\t");
+          _builder.newLineIfNotEmpty();
+        }
+      }
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("* Main methods");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("public static void main(String[] args) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("new ");
+      _builder.append(className, "\t\t");
+      _builder.append("().compute();");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _xblockexpression = _builder;
+    }
+    return _xblockexpression;
+  }
+  
+  public String generatePrivateMethod(final ResultStatement r) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("private int compute");
+    String _firstUpper = StringExtensions.toFirstUpper(this.convertTolegalJavaIdentifier(r.getLabel()));
+    _builder.append(_firstUpper);
+    _builder.append("() {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("return ");
+    Expression _exp = r.getExp();
+    HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
+    String _compile = this.compile(_exp, _hashMap);
+    _builder.append(_compile, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  public String convertTolegalJavaIdentifier(final String s) {
+    final String validChars = "[a-z]|[A-Z]|\\d|[_]";
+    final HashSet<String> illegalChars = new HashSet<String>();
+    String validIdentifier = new String(s);
+    for (int i = 0; (i < s.length()); i++) {
+      {
+        final String myChar = s.substring(i, (i + 1));
+        boolean _matches = myChar.matches(validChars);
+        boolean _not = (!_matches);
+        if (_not) {
+          illegalChars.add(myChar);
+        }
+      }
+    }
+    for (final String illegalChar : illegalChars) {
+      validIdentifier = validIdentifier.replace(illegalChar, "");
+    }
+    return validIdentifier;
+  }
+  
+  public String compile(final Expression exp, final Map<String, Integer> env) {
+    String _switchResult = null;
+    boolean _matched = false;
+    if (exp instanceof Plus) {
+      _matched=true;
+      StringConcatenation _builder = new StringConcatenation();
+      int _computeExp = this.computeExp(((Plus)exp).getLeft(), env);
+      _builder.append(_computeExp);
+      _builder.append("+");
+      int _computeExp_1 = this.computeExp(((Plus)exp).getRight(), env);
+      _builder.append(_computeExp_1);
+      _switchResult = _builder.toString();
+    }
+    if (!_matched) {
+      if (exp instanceof Minus) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        int _computeExp = this.computeExp(((Minus)exp).getLeft(), env);
+        _builder.append(_computeExp);
+        _builder.append("-");
+        int _computeExp_1 = this.computeExp(((Minus)exp).getRight(), env);
+        _builder.append(_computeExp_1);
+        _switchResult = _builder.toString();
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Mult) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        int _computeExp = this.computeExp(((Mult)exp).getLeft(), env);
+        _builder.append(_computeExp);
+        _builder.append("*");
+        int _computeExp_1 = this.computeExp(((Mult)exp).getRight(), env);
+        _builder.append(_computeExp_1);
+        _switchResult = _builder.toString();
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Div) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        int _computeExp = this.computeExp(((Div)exp).getLeft(), env);
+        _builder.append(_computeExp);
+        _builder.append("/");
+        int _computeExp_1 = this.computeExp(((Div)exp).getRight(), env);
+        _builder.append(_computeExp_1);
+        _switchResult = _builder.toString();
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Num) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        int _value = ((Num)exp).getValue();
+        _builder.append(_value);
+        _switchResult = _builder.toString();
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Var) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        Integer _get = env.get(((Var)exp).getId());
+        _builder.append(_get);
+        _switchResult = _builder.toString();
+      }
+    }
+    if (!_matched) {
+      throw new Error("Invalid expression");
+    }
+    return _switchResult;
   }
   
   public HashMap<ResultStatement, Integer> compute(final MathExp math) {
