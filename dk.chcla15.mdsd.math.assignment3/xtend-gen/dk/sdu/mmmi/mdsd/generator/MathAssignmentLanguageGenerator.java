@@ -3,14 +3,18 @@
  */
 package dk.sdu.mmmi.mdsd.generator;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Div;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Expression;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalDef;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalUse;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Let;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Minus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
@@ -19,13 +23,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import javax.swing.JOptionPane;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
 
 /**
@@ -38,11 +42,6 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     final MathExp math = Iterators.<MathExp>filter(resource.getAllContents(), MathExp.class).next();
-    final HashMap<ResultStatement, Integer> results = this.compute(math);
-    String _display = this.display(math);
-    String _plus = ("Math expressions = \n" + _display);
-    System.out.println(_plus);
-    JOptionPane.showMessageDialog(null, this.prettyPrint(results), "Math Language", JOptionPane.INFORMATION_MESSAGE);
     fsa.generateFile("MathComputation.java", this.compile(math));
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("#!/bin/bash");
@@ -58,21 +57,42 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     CharSequence _xblockexpression = null;
     {
       final String className = "MathComputation";
-      final EList<ResultStatement> resultStatements = math.getResultStatements();
+      final Iterable<ExternalDef> externalDefs = Iterables.<ExternalDef>filter(math.getDeclarations(), ExternalDef.class);
+      final Iterable<ResultStatement> resultStatements = Iterables.<ResultStatement>filter(math.getDeclarations(), ResultStatement.class);
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("/*");
       _builder.newLine();
-      _builder.append("* NB!");
+      _builder.append("* -- AUTO-GENERATED CODE --");
       _builder.newLine();
-      _builder.append("* AUTO-GENERATED CODE - DO NOT MODIFY!");
+      _builder.append("* --   DO NOT MODIFY!    --");
       _builder.newLine();
-      _builder.append("*/ ");
+      _builder.append("*/");
       _builder.newLine();
       _builder.append("public class ");
       _builder.append(className);
       _builder.append(" {");
       _builder.newLineIfNotEmpty();
-      _builder.append("\t\t\t\t");
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("* Fields");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("*/");
+      _builder.newLine();
+      {
+        int _length = ((Object[])Conversions.unwrapArray(externalDefs, Object.class)).length;
+        boolean _greaterThan = (_length > 0);
+        if (_greaterThan) {
+          _builder.append("\t");
+          _builder.append("private Externals externals;");
+          _builder.newLine();
+        }
+      }
+      _builder.append("\t");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("/*");
@@ -83,11 +103,58 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       _builder.append("\t");
       _builder.append("*/");
       _builder.newLine();
+      {
+        int _length_1 = ((Object[])Conversions.unwrapArray(externalDefs, Object.class)).length;
+        boolean _greaterThan_1 = (_length_1 > 0);
+        if (_greaterThan_1) {
+          _builder.append("\t");
+          _builder.append("public ");
+          _builder.append(className, "\t");
+          _builder.append("(Externals externals) {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("\t");
+          _builder.append("this.externals = externals;");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("/*");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("* External functions");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("*/");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("public static interface Externals {");
+          _builder.newLine();
+          {
+            for(final ExternalDef externalDef : externalDefs) {
+              _builder.append("\t");
+              _builder.append("\t");
+              String _generateExternalSignature = this.generateExternalSignature(externalDef);
+              _builder.append(_generateExternalSignature, "\t\t");
+              _builder.newLineIfNotEmpty();
+            }
+          }
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+        } else {
+          _builder.append("\t");
+          _builder.append("public ");
+          _builder.append(className, "\t");
+          _builder.append("() { }");
+          _builder.newLineIfNotEmpty();
+        }
+      }
       _builder.append("\t");
-      _builder.append("public ");
-      _builder.append(className, "\t");
-      _builder.append("() { }");
-      _builder.newLineIfNotEmpty();
+      _builder.newLine();
       _builder.append("\t");
       _builder.newLine();
       _builder.append("\t");
@@ -167,6 +234,30 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       _xblockexpression = _builder;
     }
     return _xblockexpression;
+  }
+  
+  public String generateExternalSignature(final ExternalDef exDef) {
+    final EList<Parameter> parameters = exDef.getParameters();
+    final StringBuilder parameterString = new StringBuilder();
+    for (final Parameter parameter : parameters) {
+      {
+        int _length = parameterString.length();
+        boolean _greaterThan = (_length > 0);
+        if (_greaterThan) {
+          parameterString.append(", ");
+        }
+        parameterString.append(parameter.getType().getName()).append(" ").append(parameter.getParameterName());
+      }
+    }
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("public int ");
+    String _name = exDef.getName();
+    _builder.append(_name);
+    _builder.append("(");
+    _builder.append(parameterString);
+    _builder.append(");");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
   }
   
   public String generatePrivateMethod(final ResultStatement r) {
@@ -277,7 +368,36 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       }
     }
     if (!_matched) {
-      throw new Error("Invalid expression");
+      if (exp instanceof ExternalUse) {
+        _matched=true;
+        String _xblockexpression = null;
+        {
+          final StringBuilder extArguments = new StringBuilder();
+          EList<Expression> _arguments = ((ExternalUse)exp).getArguments();
+          for (final Expression extExp : _arguments) {
+            {
+              int _length = extArguments.length();
+              boolean _greaterThan = (_length > 0);
+              if (_greaterThan) {
+                extArguments.append(", ");
+              }
+              extArguments.append("(").append(this.compile(extExp, env)).append(")");
+            }
+          }
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("externals.");
+          String _name = ((ExternalUse)exp).getExternal().getName();
+          _builder.append(_name);
+          _builder.append("(");
+          _builder.append(extArguments);
+          _builder.append(")");
+          _xblockexpression = _builder.toString();
+        }
+        _switchResult = _xblockexpression;
+      }
+    }
+    if (!_matched) {
+      throw new Error("Compile: Invalid expression");
     }
     return _switchResult;
   }
@@ -289,7 +409,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
       results.put(r, Integer.valueOf(this.computeExp(_exp, _hashMap)));
     };
-    math.getResultStatements().forEach(_function);
+    Iterables.<ResultStatement>filter(math.getDeclarations(), ResultStatement.class).forEach(_function);
     return results;
   }
   
@@ -314,7 +434,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       String _plus = (_displayExp + "\n");
       displayStrings.append(_plus);
     };
-    math.getResultStatements().forEach(_function);
+    Iterables.<ResultStatement>filter(math.getDeclarations(), ResultStatement.class).forEach(_function);
     return displayStrings.toString();
   }
   
@@ -370,7 +490,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       }
     }
     if (!_matched) {
-      throw new Error("Invalid expression");
+      throw new Error("Compute: Invalid expression");
     }
     return (_switchResult).intValue();
   }

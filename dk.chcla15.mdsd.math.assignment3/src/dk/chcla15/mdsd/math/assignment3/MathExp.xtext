@@ -3,7 +3,23 @@ grammar dk.sdu.mmmi.mdsd.MathAssignmentLanguage with org.eclipse.xtext.common.Te
 generate mathAssignmentLanguage "http://www.sdu.dk/mmmi/mdsd/MathAssignmentLanguage"
 
 MathExp:
-	resultStatements+=ResultStatement+
+	declarations+=Declaration*
+;
+
+Declaration:
+	Type | ExternalDef | ResultStatement
+;
+
+ExternalDef:
+	'external'name=ID '(' parameters+=Parameter (',' parameters+=Parameter)* ')'
+;
+
+Parameter:
+	type=[Type] parameterName=ID
+;
+
+Type:
+	'type' name=ID
 ;
 
 ResultStatement returns ResultStatement:
@@ -19,7 +35,7 @@ Factor returns Expression:
 ;
 
 Primary returns Expression:
-	Number | Parenthesis | VariableBinding | VariableUse
+	Number | Parenthesis | VariableBinding | VariableUse | ExternalUse
 ;
 
 VariableUse returns Expression:
@@ -28,6 +44,10 @@ VariableUse returns Expression:
 
 VariableBinding returns Expression:
 	{Let} 'let' id=ID '=' binding=Exp 'in' body=Exp 'end'
+;
+
+ExternalUse returns Expression:
+	{ExternalUse} external=[ExternalDef] '(' arguments+=Exp (',' arguments+=Exp)* ')'
 ;
 
 Parenthesis returns Expression:

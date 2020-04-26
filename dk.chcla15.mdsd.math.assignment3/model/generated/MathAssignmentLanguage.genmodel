@@ -7,7 +7,19 @@
   <genPackages prefix="MathAssignmentLanguage" basePackage="dk.sdu.mmmi.mdsd" disposableProviderFactory="true"
       fileExtensions="mathexp" ecorePackage="MathAssignmentLanguage.ecore#/">
     <genClasses ecoreClass="MathAssignmentLanguage.ecore#//MathExp">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//MathExp/resultStatements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//MathExp/declarations"/>
+    </genClasses>
+    <genClasses ecoreClass="MathAssignmentLanguage.ecore#//Declaration"/>
+    <genClasses ecoreClass="MathAssignmentLanguage.ecore#//ExternalDef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//ExternalDef/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//ExternalDef/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="MathAssignmentLanguage.ecore#//Parameter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//Parameter/parameterName"/>
+    </genClasses>
+    <genClasses ecoreClass="MathAssignmentLanguage.ecore#//Type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//Type/name"/>
     </genClasses>
     <genClasses ecoreClass="MathAssignmentLanguage.ecore#//ResultStatement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//ResultStatement/label"/>
@@ -37,6 +49,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//Let/id"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//Let/binding"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//Let/body"/>
+    </genClasses>
+    <genClasses ecoreClass="MathAssignmentLanguage.ecore#//ExternalUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//ExternalUse/external"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MathAssignmentLanguage.ecore#//ExternalUse/arguments"/>
     </genClasses>
     <genClasses ecoreClass="MathAssignmentLanguage.ecore#//Num">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MathAssignmentLanguage.ecore#//Num/value"/>

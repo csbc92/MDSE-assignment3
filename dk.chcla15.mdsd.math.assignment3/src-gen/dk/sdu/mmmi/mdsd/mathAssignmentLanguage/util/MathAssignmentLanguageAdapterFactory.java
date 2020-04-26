@@ -81,6 +81,26 @@ public class MathAssignmentLanguageAdapterFactory extends AdapterFactoryImpl
         return createMathExpAdapter();
       }
       @Override
+      public Adapter caseDeclaration(Declaration object)
+      {
+        return createDeclarationAdapter();
+      }
+      @Override
+      public Adapter caseExternalDef(ExternalDef object)
+      {
+        return createExternalDefAdapter();
+      }
+      @Override
+      public Adapter caseParameter(Parameter object)
+      {
+        return createParameterAdapter();
+      }
+      @Override
+      public Adapter caseType(Type object)
+      {
+        return createTypeAdapter();
+      }
+      @Override
       public Adapter caseResultStatement(ResultStatement object)
       {
         return createResultStatementAdapter();
@@ -121,6 +141,11 @@ public class MathAssignmentLanguageAdapterFactory extends AdapterFactoryImpl
         return createLetAdapter();
       }
       @Override
+      public Adapter caseExternalUse(ExternalUse object)
+      {
+        return createExternalUseAdapter();
+      }
+      @Override
       public Adapter caseNum(Num object)
       {
         return createNumAdapter();
@@ -158,6 +183,66 @@ public class MathAssignmentLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMathExpAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Declaration <em>Declaration</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Declaration
+   * @generated
+   */
+  public Adapter createDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalDef <em>External Def</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalDef
+   * @generated
+   */
+  public Adapter createExternalDefAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter <em>Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter
+   * @generated
+   */
+  public Adapter createParameterAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Type <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Type
+   * @generated
+   */
+  public Adapter createTypeAdapter()
   {
     return null;
   }
@@ -278,6 +363,21 @@ public class MathAssignmentLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createLetAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalUse <em>External Use</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalUse
+   * @generated
+   */
+  public Adapter createExternalUseAdapter()
   {
     return null;
   }

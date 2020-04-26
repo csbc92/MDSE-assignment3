@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getResultStatements <em>Result Statements</em>}</li>
+ *   <li>{@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp#getDeclarations <em>Declarations</em>}</li>
  * </ul>
  *
  * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage#getMathExp()
@@ -26,15 +26,15 @@ import org.eclipse.emf.ecore.EObject;
 public interface MathExp extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Result Statements</b></em>' containment reference list.
-   * The list contents are of type {@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement}.
+   * Returns the value of the '<em><b>Declarations</b></em>' containment reference list.
+   * The list contents are of type {@link dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Declaration}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Result Statements</em>' containment reference list.
-   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage#getMathExp_ResultStatements()
+   * @return the value of the '<em>Declarations</em>' containment reference list.
+   * @see dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage#getMathExp_Declarations()
    * @model containment="true"
    * @generated
    */
-  EList<ResultStatement> getResultStatements();
+  EList<Declaration> getDeclarations();
 
 } // MathExp

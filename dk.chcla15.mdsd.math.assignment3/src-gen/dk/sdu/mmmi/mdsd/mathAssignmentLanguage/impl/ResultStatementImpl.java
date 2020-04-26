@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +29,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ResultStatementImpl extends MinimalEObjectImpl.Container implements ResultStatement
+public class ResultStatementImpl extends DeclarationImpl implements ResultStatement
 {
   /**
    * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.

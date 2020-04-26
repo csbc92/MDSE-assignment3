@@ -21,6 +21,8 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Let
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement
 import java.util.HashSet
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalDef
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalUse
 
 /**
  * Generates code from your model files on save.
@@ -32,9 +34,9 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		
 		val math = resource.allContents.filter(MathExp).next // Root level of metamodel instance
-		val results = math.compute
-		System.out.println("Math expressions = \n" + math.display)
-		JOptionPane.showMessageDialog(null, results.prettyPrint,"Math Language", JOptionPane.INFORMATION_MESSAGE)
+		//val results = math.compute
+		//System.out.println("Math expressions = \n" + math.display)
+		//JOptionPane.showMessageDialog(null, results.prettyPrint,"Math Language", JOptionPane.INFORMATION_MESSAGE)
 		
 		fsa.generateFile("MathComputation.java", math.compile)		
 		
@@ -56,19 +58,43 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	def compile(MathExp math) {
 		// Name of the generated class
 		val className = "MathComputation"
-		val resultStatements = math.resultStatements
+		val externalDefs = math.declarations.filter(ExternalDef)
+		val resultStatements = math.declarations.filter(ResultStatement)		
 		
 		'''
 		/*
-		* NB!
-		* AUTO-GENERATED CODE - DO NOT MODIFY!
-		*/ 
+		* -- AUTO-GENERATED CODE --
+		* --   DO NOT MODIFY!    --
+		*/
 		public class «className» {
-						
+			
+			/*
+			* Fields
+			*/
+			«IF externalDefs.length > 0»
+			private Externals externals;
+			«ENDIF»
+			
 			/*
 			* Constructors
 			*/
+			«IF externalDefs.length > 0»
+			public «className»(Externals externals) {
+				this.externals = externals;
+			}
+			
+			/*
+			* External functions
+			*/
+			public static interface Externals {
+				«FOR externalDef : externalDefs»
+				«generateExternalSignature(externalDef)»
+				«ENDFOR»
+			}
+			«ELSE»
 			public «className»() { }
+			«ENDIF»
+			
 			
 			/*
 			* Public methods
@@ -94,6 +120,21 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 				new «className»().compute();
 			}
 		}
+		'''
+	}
+	
+	def String generateExternalSignature(ExternalDef exDef) {
+		val parameters = exDef.parameters
+		
+		val parameterString = new StringBuilder()
+		for (parameter : parameters) {
+			if (parameterString.length > 0) parameterString.append(", ")
+			parameterString.append(parameter.type.name).append(" ").append(parameter.parameterName)
+		}
+		
+		return
+		'''
+		public int «exDef.name»(«parameterString»);
 		'''
 	}
 	
@@ -136,14 +177,23 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			Num: '''«exp.value»'''
 			Var: '''«env.get(exp.id)»'''
 			//Let: exp.body.computeExp(env.bind(exp.id,exp.binding.computeExp(env)))
-			default: throw new Error("Invalid expression")
+			ExternalUse: {
+				val extArguments = new StringBuilder()
+				for (extExp : exp.arguments) {
+					if (extArguments.length > 0) extArguments.append(", ")
+					extArguments.append("(").append(extExp.compile(env)).append(")")
+				}
+			 	'''externals.«exp.external.name»(«extArguments»)'''
+			 }
+			
+			default: throw new Error("Compile: Invalid expression")
 		}
 	}
 	
 	def compute(MathExp math) {
 		val results = new HashMap<ResultStatement, Integer>
 		
-		math.resultStatements.forEach[ r | {
+		math.declarations.filter(ResultStatement).forEach[ r | {
 			results.put(r, r.exp.computeExp(new HashMap<String, Integer>))
 		}]
 		
@@ -165,7 +215,7 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	def display(MathExp math) {
 		val displayStrings = new StringBuilder
 		
-		math.resultStatements.forEach[ r | {
+		math.declarations.filter(ResultStatement).forEach[ r | {
 			displayStrings.append(r.exp.displayExp() + "\n"
 			)
 		}]
@@ -191,7 +241,7 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			Num: exp.value
 			Var: env.get(exp.id)
 			Let: exp.body.computeExp(env.bind(exp.id,exp.binding.computeExp(env)))
-			default: throw new Error("Invalid expression")
+			default: throw new Error("Compute: Invalid expression")
 		}
 	}
 	

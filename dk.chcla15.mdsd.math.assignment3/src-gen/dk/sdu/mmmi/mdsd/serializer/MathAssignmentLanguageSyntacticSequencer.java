@@ -56,6 +56,7 @@ public class MathAssignmentLanguageSyntacticSequencer extends AbstractSyntacticS
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) 'let' id=ID
+	 *     (rule start) (ambiguity) external=[ExternalDef|ID]
 	 *     (rule start) (ambiguity) id=ID
 	 *     (rule start) (ambiguity) value=INT
 	 *     (rule start) (ambiguity) {Div.left=}
@@ -73,6 +74,7 @@ public class MathAssignmentLanguageSyntacticSequencer extends AbstractSyntacticS
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) 'let' id=ID
+	 *     (rule start) (ambiguity) external=[ExternalDef|ID]
 	 *     (rule start) (ambiguity) id=ID
 	 *     (rule start) (ambiguity) value=INT
 	 *     (rule start) (ambiguity) {Div.left=}

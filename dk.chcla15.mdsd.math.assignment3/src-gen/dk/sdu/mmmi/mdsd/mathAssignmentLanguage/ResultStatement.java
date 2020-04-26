@@ -3,7 +3,6 @@
  */
 package dk.sdu.mmmi.mdsd.mathAssignmentLanguage;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface ResultStatement extends EObject
+public interface ResultStatement extends Declaration
 {
   /**
    * Returns the value of the '<em><b>Label</b></em>' attribute.

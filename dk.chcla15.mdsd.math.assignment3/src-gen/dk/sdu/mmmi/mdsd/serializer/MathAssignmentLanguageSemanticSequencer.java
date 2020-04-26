@@ -5,6 +5,8 @@ package dk.sdu.mmmi.mdsd.serializer;
 
 import com.google.inject.Inject;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Div;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalDef;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalUse;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Let;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp;
@@ -13,6 +15,7 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Type;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
 import dk.sdu.mmmi.mdsd.services.MathAssignmentLanguageGrammarAccess;
 import java.util.Set;
@@ -43,6 +46,12 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 			case MathAssignmentLanguagePackage.DIV:
 				sequence_Factor(context, (Div) semanticObject); 
 				return; 
+			case MathAssignmentLanguagePackage.EXTERNAL_DEF:
+				sequence_ExternalDef(context, (ExternalDef) semanticObject); 
+				return; 
+			case MathAssignmentLanguagePackage.EXTERNAL_USE:
+				sequence_ExternalUse(context, (ExternalUse) semanticObject); 
+				return; 
 			case MathAssignmentLanguagePackage.LET:
 				sequence_VariableBinding(context, (Let) semanticObject); 
 				return; 
@@ -58,11 +67,17 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 			case MathAssignmentLanguagePackage.NUM:
 				sequence_Number(context, (Num) semanticObject); 
 				return; 
+			case MathAssignmentLanguagePackage.PARAMETER:
+				sequence_Parameter(context, (dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter) semanticObject); 
+				return; 
 			case MathAssignmentLanguagePackage.PLUS:
 				sequence_Exp(context, (Plus) semanticObject); 
 				return; 
 			case MathAssignmentLanguagePackage.RESULT_STATEMENT:
 				sequence_ResultStatement(context, (ResultStatement) semanticObject); 
+				return; 
+			case MathAssignmentLanguagePackage.TYPE:
+				sequence_Type(context, (Type) semanticObject); 
 				return; 
 			case MathAssignmentLanguagePackage.VAR:
 				sequence_VariableUse(context, (Var) semanticObject); 
@@ -130,6 +145,39 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 	
 	/**
 	 * Contexts:
+	 *     Declaration returns ExternalDef
+	 *     ExternalDef returns ExternalDef
+	 *
+	 * Constraint:
+	 *     (name=ID parameters+=Parameter parameters+=Parameter*)
+	 */
+	protected void sequence_ExternalDef(ISerializationContext context, ExternalDef semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Exp returns ExternalUse
+	 *     Exp.Plus_1_0_0_1 returns ExternalUse
+	 *     Exp.Minus_1_0_1_1 returns ExternalUse
+	 *     Factor returns ExternalUse
+	 *     Factor.Mult_1_0_0_1 returns ExternalUse
+	 *     Factor.Div_1_0_1_1 returns ExternalUse
+	 *     Primary returns ExternalUse
+	 *     ExternalUse returns ExternalUse
+	 *     Parenthesis returns ExternalUse
+	 *
+	 * Constraint:
+	 *     (external=[ExternalDef|ID] arguments+=Exp arguments+=Exp*)
+	 */
+	protected void sequence_ExternalUse(ISerializationContext context, ExternalUse semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     Exp returns Div
 	 *     Exp.Plus_1_0_0_1 returns Div
 	 *     Exp.Minus_1_0_1_1 returns Div
@@ -189,7 +237,7 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 	 *     MathExp returns MathExp
 	 *
 	 * Constraint:
-	 *     resultStatements+=ResultStatement+
+	 *     declarations+=Declaration+
 	 */
 	protected void sequence_MathExp(ISerializationContext context, MathExp semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -224,6 +272,28 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 	
 	/**
 	 * Contexts:
+	 *     Parameter returns Parameter
+	 *
+	 * Constraint:
+	 *     (type=[Type|ID] parameterName=ID)
+	 */
+	protected void sequence_Parameter(ISerializationContext context, dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MathAssignmentLanguagePackage.Literals.PARAMETER__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathAssignmentLanguagePackage.Literals.PARAMETER__TYPE));
+			if (transientValues.isValueTransient(semanticObject, MathAssignmentLanguagePackage.Literals.PARAMETER__PARAMETER_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathAssignmentLanguagePackage.Literals.PARAMETER__PARAMETER_NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getParameterAccess().getTypeTypeIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MathAssignmentLanguagePackage.Literals.PARAMETER__TYPE, false));
+		feeder.accept(grammarAccess.getParameterAccess().getParameterNameIDTerminalRuleCall_1_0(), semanticObject.getParameterName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Declaration returns ResultStatement
 	 *     ResultStatement returns ResultStatement
 	 *
 	 * Constraint:
@@ -239,6 +309,25 @@ public class MathAssignmentLanguageSemanticSequencer extends AbstractDelegatingS
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getResultStatementAccess().getLabelSTRINGTerminalRuleCall_1_0(), semanticObject.getLabel());
 		feeder.accept(grammarAccess.getResultStatementAccess().getExpExpParserRuleCall_3_0(), semanticObject.getExp());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Declaration returns Type
+	 *     Type returns Type
+	 *
+	 * Constraint:
+	 *     name=ID
+	 */
+	protected void sequence_Type(ISerializationContext context, Type semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MathAssignmentLanguagePackage.Literals.TYPE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathAssignmentLanguagePackage.Literals.TYPE__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTypeAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	

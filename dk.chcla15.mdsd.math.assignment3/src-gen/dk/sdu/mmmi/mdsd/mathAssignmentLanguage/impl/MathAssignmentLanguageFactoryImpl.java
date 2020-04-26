@@ -66,6 +66,10 @@ public class MathAssignmentLanguageFactoryImpl extends EFactoryImpl implements M
     switch (eClass.getClassifierID())
     {
       case MathAssignmentLanguagePackage.MATH_EXP: return createMathExp();
+      case MathAssignmentLanguagePackage.DECLARATION: return createDeclaration();
+      case MathAssignmentLanguagePackage.EXTERNAL_DEF: return createExternalDef();
+      case MathAssignmentLanguagePackage.PARAMETER: return createParameter();
+      case MathAssignmentLanguagePackage.TYPE: return createType();
       case MathAssignmentLanguagePackage.RESULT_STATEMENT: return createResultStatement();
       case MathAssignmentLanguagePackage.EXPRESSION: return createExpression();
       case MathAssignmentLanguagePackage.PLUS: return createPlus();
@@ -74,6 +78,7 @@ public class MathAssignmentLanguageFactoryImpl extends EFactoryImpl implements M
       case MathAssignmentLanguagePackage.DIV: return createDiv();
       case MathAssignmentLanguagePackage.VAR: return createVar();
       case MathAssignmentLanguagePackage.LET: return createLet();
+      case MathAssignmentLanguagePackage.EXTERNAL_USE: return createExternalUse();
       case MathAssignmentLanguagePackage.NUM: return createNum();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -90,6 +95,54 @@ public class MathAssignmentLanguageFactoryImpl extends EFactoryImpl implements M
   {
     MathExpImpl mathExp = new MathExpImpl();
     return mathExp;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Declaration createDeclaration()
+  {
+    DeclarationImpl declaration = new DeclarationImpl();
+    return declaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ExternalDef createExternalDef()
+  {
+    ExternalDefImpl externalDef = new ExternalDefImpl();
+    return externalDef;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Parameter createParameter()
+  {
+    ParameterImpl parameter = new ParameterImpl();
+    return parameter;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Type createType()
+  {
+    TypeImpl type = new TypeImpl();
+    return type;
   }
 
   /**
@@ -186,6 +239,18 @@ public class MathAssignmentLanguageFactoryImpl extends EFactoryImpl implements M
   {
     LetImpl let = new LetImpl();
     return let;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ExternalUse createExternalUse()
+  {
+    ExternalUseImpl externalUse = new ExternalUseImpl();
+    return externalUse;
   }
 
   /**

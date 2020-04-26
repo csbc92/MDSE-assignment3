@@ -3,8 +3,11 @@
  */
 package dk.sdu.mmmi.mdsd.mathAssignmentLanguage.impl;
 
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Declaration;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Div;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Expression;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalDef;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ExternalUse;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Let;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguageFactory;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathAssignmentLanguagePackage;
@@ -12,8 +15,10 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Minus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Num;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
+import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Type;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -37,6 +42,34 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
    * @generated
    */
   private EClass mathExpEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass declarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass externalDefEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass parameterEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass typeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -93,6 +126,13 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
    * @generated
    */
   private EClass letEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass externalUseEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -181,9 +221,108 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
    * @generated
    */
   @Override
-  public EReference getMathExp_ResultStatements()
+  public EReference getMathExp_Declarations()
   {
     return (EReference)mathExpEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getDeclaration()
+  {
+    return declarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getExternalDef()
+  {
+    return externalDefEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getExternalDef_Name()
+  {
+    return (EAttribute)externalDefEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getExternalDef_Parameters()
+  {
+    return (EReference)externalDefEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getParameter()
+  {
+    return parameterEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getParameter_Type()
+  {
+    return (EReference)parameterEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getParameter_ParameterName()
+  {
+    return (EAttribute)parameterEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getType()
+  {
+    return typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getType_Name()
+  {
+    return (EAttribute)typeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -434,6 +573,39 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
    * @generated
    */
   @Override
+  public EClass getExternalUse()
+  {
+    return externalUseEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getExternalUse_External()
+  {
+    return (EReference)externalUseEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getExternalUse_Arguments()
+  {
+    return (EReference)externalUseEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getNum()
   {
     return numEClass;
@@ -482,7 +654,20 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
 
     // Create classes and their features
     mathExpEClass = createEClass(MATH_EXP);
-    createEReference(mathExpEClass, MATH_EXP__RESULT_STATEMENTS);
+    createEReference(mathExpEClass, MATH_EXP__DECLARATIONS);
+
+    declarationEClass = createEClass(DECLARATION);
+
+    externalDefEClass = createEClass(EXTERNAL_DEF);
+    createEAttribute(externalDefEClass, EXTERNAL_DEF__NAME);
+    createEReference(externalDefEClass, EXTERNAL_DEF__PARAMETERS);
+
+    parameterEClass = createEClass(PARAMETER);
+    createEReference(parameterEClass, PARAMETER__TYPE);
+    createEAttribute(parameterEClass, PARAMETER__PARAMETER_NAME);
+
+    typeEClass = createEClass(TYPE);
+    createEAttribute(typeEClass, TYPE__NAME);
 
     resultStatementEClass = createEClass(RESULT_STATEMENT);
     createEAttribute(resultStatementEClass, RESULT_STATEMENT__LABEL);
@@ -513,6 +698,10 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
     createEAttribute(letEClass, LET__ID);
     createEReference(letEClass, LET__BINDING);
     createEReference(letEClass, LET__BODY);
+
+    externalUseEClass = createEClass(EXTERNAL_USE);
+    createEReference(externalUseEClass, EXTERNAL_USE__EXTERNAL);
+    createEReference(externalUseEClass, EXTERNAL_USE__ARGUMENTS);
 
     numEClass = createEClass(NUM);
     createEAttribute(numEClass, NUM__VALUE);
@@ -547,17 +736,34 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    externalDefEClass.getESuperTypes().add(this.getDeclaration());
+    typeEClass.getESuperTypes().add(this.getDeclaration());
+    resultStatementEClass.getESuperTypes().add(this.getDeclaration());
     plusEClass.getESuperTypes().add(this.getExpression());
     minusEClass.getESuperTypes().add(this.getExpression());
     multEClass.getESuperTypes().add(this.getExpression());
     divEClass.getESuperTypes().add(this.getExpression());
     varEClass.getESuperTypes().add(this.getExpression());
     letEClass.getESuperTypes().add(this.getExpression());
+    externalUseEClass.getESuperTypes().add(this.getExpression());
     numEClass.getESuperTypes().add(this.getExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mathExpEClass, MathExp.class, "MathExp", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMathExp_ResultStatements(), this.getResultStatement(), null, "resultStatements", null, 0, -1, MathExp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMathExp_Declarations(), this.getDeclaration(), null, "declarations", null, 0, -1, MathExp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(declarationEClass, Declaration.class, "Declaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(externalDefEClass, ExternalDef.class, "ExternalDef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getExternalDef_Name(), ecorePackage.getEString(), "name", null, 0, 1, ExternalDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getExternalDef_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, ExternalDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getParameter_Type(), this.getType(), null, "type", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getParameter_ParameterName(), ecorePackage.getEString(), "parameterName", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getType_Name(), ecorePackage.getEString(), "name", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(resultStatementEClass, ResultStatement.class, "ResultStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getResultStatement_Label(), ecorePackage.getEString(), "label", null, 0, 1, ResultStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -588,6 +794,10 @@ public class MathAssignmentLanguagePackageImpl extends EPackageImpl implements M
     initEAttribute(getLet_Id(), ecorePackage.getEString(), "id", null, 0, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getLet_Binding(), this.getExpression(), null, "binding", null, 0, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getLet_Body(), this.getExpression(), null, "body", null, 0, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(externalUseEClass, ExternalUse.class, "ExternalUse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getExternalUse_External(), this.getExternalDef(), null, "external", null, 0, 1, ExternalUse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getExternalUse_Arguments(), this.getExpression(), null, "arguments", null, 0, -1, ExternalUse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(numEClass, Num.class, "Num", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getNum_Value(), ecorePackage.getEInt(), "value", null, 0, 1, Num.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
