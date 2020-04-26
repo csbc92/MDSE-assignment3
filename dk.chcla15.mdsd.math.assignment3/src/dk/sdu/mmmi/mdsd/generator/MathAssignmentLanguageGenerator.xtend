@@ -169,11 +169,11 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	}
 	
 	def String compile(Expression exp, Map<String,Integer> env) {
-		switch (exp) {
-			Plus: '''«exp.left.computeExp(env)»+«exp.right.computeExp(env)»'''
-			Minus: '''«exp.left.computeExp(env)»-«exp.right.computeExp(env)»'''
-			Mult: '''«exp.left.computeExp(env)»*«exp.right.computeExp(env)»'''
-			Div: '''«exp.left.computeExp(env)»/«exp.right.computeExp(env)»'''
+		"(" + switch (exp) {
+			Plus: '''«exp.left.compile(env)»+«exp.right.compile(env)»'''
+			Minus: '''«exp.left.compile(env)»-«exp.right.compile(env)»'''
+			Mult: '''«exp.left.compile(env)»*«exp.right.compile(env)»'''
+			Div: '''«exp.left.compile(env)»/«exp.right.compile(env)»'''
 			Num: '''«exp.value»'''
 			Var: '''«env.get(exp.id)»'''
 			//Let: exp.body.computeExp(env.bind(exp.id,exp.binding.computeExp(env)))
@@ -187,7 +187,7 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			 }
 			
 			default: throw new Error("Compile: Invalid expression")
-		}
+		} + ")"
 	}
 	
 	def compute(MathExp math) {

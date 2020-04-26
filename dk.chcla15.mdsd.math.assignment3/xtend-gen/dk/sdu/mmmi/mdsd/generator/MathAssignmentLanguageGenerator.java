@@ -301,52 +301,52 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
   }
   
   public String compile(final Expression exp, final Map<String, Integer> env) {
-    String _switchResult = null;
+    CharSequence _switchResult = null;
     boolean _matched = false;
     if (exp instanceof Plus) {
       _matched=true;
       StringConcatenation _builder = new StringConcatenation();
-      int _computeExp = this.computeExp(((Plus)exp).getLeft(), env);
-      _builder.append(_computeExp);
+      String _compile = this.compile(((Plus)exp).getLeft(), env);
+      _builder.append(_compile);
       _builder.append("+");
-      int _computeExp_1 = this.computeExp(((Plus)exp).getRight(), env);
-      _builder.append(_computeExp_1);
-      _switchResult = _builder.toString();
+      String _compile_1 = this.compile(((Plus)exp).getRight(), env);
+      _builder.append(_compile_1);
+      _switchResult = _builder;
     }
     if (!_matched) {
       if (exp instanceof Minus) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        int _computeExp = this.computeExp(((Minus)exp).getLeft(), env);
-        _builder.append(_computeExp);
+        String _compile = this.compile(((Minus)exp).getLeft(), env);
+        _builder.append(_compile);
         _builder.append("-");
-        int _computeExp_1 = this.computeExp(((Minus)exp).getRight(), env);
-        _builder.append(_computeExp_1);
-        _switchResult = _builder.toString();
+        String _compile_1 = this.compile(((Minus)exp).getRight(), env);
+        _builder.append(_compile_1);
+        _switchResult = _builder;
       }
     }
     if (!_matched) {
       if (exp instanceof Mult) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        int _computeExp = this.computeExp(((Mult)exp).getLeft(), env);
-        _builder.append(_computeExp);
+        String _compile = this.compile(((Mult)exp).getLeft(), env);
+        _builder.append(_compile);
         _builder.append("*");
-        int _computeExp_1 = this.computeExp(((Mult)exp).getRight(), env);
-        _builder.append(_computeExp_1);
-        _switchResult = _builder.toString();
+        String _compile_1 = this.compile(((Mult)exp).getRight(), env);
+        _builder.append(_compile_1);
+        _switchResult = _builder;
       }
     }
     if (!_matched) {
       if (exp instanceof Div) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        int _computeExp = this.computeExp(((Div)exp).getLeft(), env);
-        _builder.append(_computeExp);
+        String _compile = this.compile(((Div)exp).getLeft(), env);
+        _builder.append(_compile);
         _builder.append("/");
-        int _computeExp_1 = this.computeExp(((Div)exp).getRight(), env);
-        _builder.append(_computeExp_1);
-        _switchResult = _builder.toString();
+        String _compile_1 = this.compile(((Div)exp).getRight(), env);
+        _builder.append(_compile_1);
+        _switchResult = _builder;
       }
     }
     if (!_matched) {
@@ -355,7 +355,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
         StringConcatenation _builder = new StringConcatenation();
         int _value = ((Num)exp).getValue();
         _builder.append(_value);
-        _switchResult = _builder.toString();
+        _switchResult = _builder;
       }
     }
     if (!_matched) {
@@ -364,13 +364,13 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
         StringConcatenation _builder = new StringConcatenation();
         Integer _get = env.get(((Var)exp).getId());
         _builder.append(_get);
-        _switchResult = _builder.toString();
+        _switchResult = _builder;
       }
     }
     if (!_matched) {
       if (exp instanceof ExternalUse) {
         _matched=true;
-        String _xblockexpression = null;
+        CharSequence _xblockexpression = null;
         {
           final StringBuilder extArguments = new StringBuilder();
           EList<Expression> _arguments = ((ExternalUse)exp).getArguments();
@@ -391,7 +391,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
           _builder.append("(");
           _builder.append(extArguments);
           _builder.append(")");
-          _xblockexpression = _builder.toString();
+          _xblockexpression = _builder;
         }
         _switchResult = _xblockexpression;
       }
@@ -399,7 +399,8 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     if (!_matched) {
       throw new Error("Compile: Invalid expression");
     }
-    return _switchResult;
+    String _plus = ("(" + _switchResult);
+    return (_plus + ")");
   }
   
   public HashMap<ResultStatement, Integer> compute(final MathExp math) {

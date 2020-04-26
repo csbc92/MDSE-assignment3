@@ -13,7 +13,7 @@ public class MathComputation {
 	* Constructors
 	*/
 	public MathComputation(Externals externals) {
-		this.externals = externals
+		this.externals = externals;
 	}
 	
 	/*
@@ -21,6 +21,7 @@ public class MathComputation {
 	*/
 	public static interface Externals {
 		public int power(int a, int b);
+		public int sqrt(int a);
 	}
 	
 	
@@ -38,13 +39,13 @@ public class MathComputation {
 	* Result statements
 	*/
 	private int computeThisismycalc1() {
-		return 11-2;
+		return (((1)+(((6)/(3))*(5)))-(2));
 	}
 	private int computeThis_is2ndcalculation() {
-		return 2135+4;
+		return ((((210)*(10))+(35))+((5)-((2)-(1))));
 	}
 	private int computeThisismy3rdcalculation() {
-		return externals.power((1), (2));
+		return ((1)+((externals.power(((2)), ((3))))*(externals.sqrt(((9))))));
 	}
 	
 	/*

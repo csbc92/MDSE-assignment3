@@ -1,11 +1,12 @@
 type int
 external power(int a, int b)
+external sqrt(int a)
 
 result "This is my calc 1" is 1 + (6 / 3) * 5 - 2
 
 result "This_is 2nd calculation" is 210 * 10 + 35 + (5 - (2 - 1))
 
-result "this is my 3rd calculation" is power(1, 2)
+result "this is my 3rd calculation" is 1 + power(2, 3) * sqrt(9)
 
 // 7
 //result "First value" is
