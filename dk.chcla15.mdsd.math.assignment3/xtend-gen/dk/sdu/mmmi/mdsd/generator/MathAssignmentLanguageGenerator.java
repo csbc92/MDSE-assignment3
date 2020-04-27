@@ -62,9 +62,23 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("/*");
       _builder.newLine();
-      _builder.append("* -- AUTO-GENERATED CODE --");
+      _builder.append("* AUTO-GENERATED CODE!");
       _builder.newLine();
-      _builder.append("* --   DO NOT MODIFY!    --");
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("* Imports");
+      _builder.newLine();
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.append("import java.util.function.Function;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("* Class");
       _builder.newLine();
       _builder.append("*/");
       _builder.newLine();
@@ -139,6 +153,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
               _builder.append("\t");
               String _generateExternalSignature = this.generateExternalSignature(externalDef);
               _builder.append(_generateExternalSignature, "\t\t");
+              _builder.append(";");
               _builder.newLineIfNotEmpty();
             }
           }
@@ -218,17 +233,69 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       _builder.append("\t");
       _builder.append("*/");
       _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public static void main(String[] args) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("new ");
-      _builder.append(className, "\t\t");
-      _builder.append("().compute();");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
+      {
+        int _length_2 = ((Object[])Conversions.unwrapArray(externalDefs, Object.class)).length;
+        boolean _greaterThan_2 = (_length_2 > 0);
+        if (_greaterThan_2) {
+          _builder.append("\t");
+          _builder.append("public static void main(String[] args) {");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("\t");
+          _builder.append("new ");
+          _builder.append(className, "\t\t");
+          _builder.append("(new Externals() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("\t\t");
+          _builder.append("@Override");
+          _builder.newLine();
+          {
+            for(final ExternalDef externalDef_1 : externalDefs) {
+              _builder.append("\t");
+              _builder.append("\t\t");
+              String _generateExternalSignature_1 = this.generateExternalSignature(externalDef_1);
+              _builder.append(_generateExternalSignature_1, "\t\t\t");
+              _builder.append(" {");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("\t");
+              _builder.append("// TODO: Implement method");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("\t");
+              _builder.append("throw new UnsupportedOperationException();");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("}");
+              _builder.newLine();
+            }
+          }
+          _builder.append("\t");
+          _builder.append("\t");
+          _builder.append("}).compute();");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+        } else {
+          _builder.append("\t");
+          _builder.append("public static void main(String[] args) {");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("\t");
+          _builder.append("new ");
+          _builder.append(className, "\t\t");
+          _builder.append("().compute();");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+        }
+      }
       _builder.append("}");
       _builder.newLine();
       _xblockexpression = _builder;
@@ -255,8 +322,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     _builder.append(_name);
     _builder.append("(");
     _builder.append(parameterString);
-    _builder.append(");");
-    _builder.newLineIfNotEmpty();
+    _builder.append(")");
     return _builder.toString();
   }
   
@@ -362,8 +428,35 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       if (exp instanceof Var) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        Integer _get = env.get(((Var)exp).getId());
-        _builder.append(_get);
+        _builder.append("t");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Let) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("new Function<Integer, Integer>() {");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("@Override");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("public Integer apply(Integer t) {");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("return ");
+        String _compile = this.compile(((Let)exp).getBody(), env);
+        _builder.append(_compile, "\t\t");
+        _builder.append(";");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("}.apply(");
+        String _compile_1 = this.compile(((Let)exp).getBinding(), env);
+        _builder.append(_compile_1);
+        _builder.append(")");
         _switchResult = _builder;
       }
     }

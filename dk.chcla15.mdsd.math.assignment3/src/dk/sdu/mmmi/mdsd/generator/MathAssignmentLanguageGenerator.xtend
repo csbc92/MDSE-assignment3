@@ -56,15 +56,22 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	}
 	
 	def compile(MathExp math) {
-		// Name of the generated class
-		val className = "MathComputation"
+		val className = "MathComputation" // Name of the generated class
 		val externalDefs = math.declarations.filter(ExternalDef)
 		val resultStatements = math.declarations.filter(ResultStatement)		
 		
 		'''
 		/*
-		* -- AUTO-GENERATED CODE --
-		* --   DO NOT MODIFY!    --
+		* AUTO-GENERATED CODE!
+		*/
+		
+		/*
+		* Imports
+		*/
+		import java.util.function.Function;
+		
+		/*
+		* Class
 		*/
 		public class «className» {
 			
@@ -88,7 +95,7 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			*/
 			public static interface Externals {
 				«FOR externalDef : externalDefs»
-				«generateExternalSignature(externalDef)»
+				«generateExternalSignature(externalDef)»;
 				«ENDFOR»
 			}
 			«ELSE»
@@ -116,9 +123,23 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			/*
 			* Main methods
 			*/
+			«IF externalDefs.length > 0»
+			public static void main(String[] args) {
+				new «className»(new Externals() {
+					@Override
+					«FOR externalDef : externalDefs»
+					«generateExternalSignature(externalDef)» {
+						// TODO: Implement method
+						throw new UnsupportedOperationException();
+					}
+					«ENDFOR»
+				}).compute();
+			}
+			«ELSE»
 			public static void main(String[] args) {
 				new «className»().compute();
 			}
+			«ENDIF»
 		}
 		'''
 	}
@@ -133,9 +154,7 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 		}
 		
 		return
-		'''
-		public int «exDef.name»(«parameterString»);
-		'''
+		'''public int «exDef.name»(«parameterString»)'''
 	}
 	
 	def String generatePrivateMethod(ResultStatement r) {
@@ -175,8 +194,16 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			Mult: '''«exp.left.compile(env)»*«exp.right.compile(env)»'''
 			Div: '''«exp.left.compile(env)»/«exp.right.compile(env)»'''
 			Num: '''«exp.value»'''
-			Var: '''«env.get(exp.id)»'''
-			//Let: exp.body.computeExp(env.bind(exp.id,exp.binding.computeExp(env)))
+			Var: '''t''' //'''«env.get(exp.id)»'''
+			Let: {
+				'''
+				new Function<Integer, Integer>() {
+					@Override
+					public Integer apply(Integer t) {
+						return «exp.body.compile(env)»;
+					}
+				}.apply(«exp.binding.compile(env)»)'''
+			}
 			ExternalUse: {
 				val extArguments = new StringBuilder()
 				for (extExp : exp.arguments) {
