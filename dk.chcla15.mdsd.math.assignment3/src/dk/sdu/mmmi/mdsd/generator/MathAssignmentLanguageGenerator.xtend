@@ -7,11 +7,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import javax.swing.JOptionPane
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.MathExp
-import java.util.HashMap
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Expression
-import java.util.Map
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Minus
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Mult
@@ -34,9 +31,6 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		
 		val math = resource.allContents.filter(MathExp).next // Root level of metamodel instance
-		//val results = math.compute
-		//System.out.println("Math expressions = \n" + math.display)
-		//JOptionPane.showMessageDialog(null, results.prettyPrint,"Math Language", JOptionPane.INFORMATION_MESSAGE)
 		
 		fsa.generateFile("MathComputation.java", math.compile)		
 		
@@ -47,12 +41,6 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			java MathComputation
 			'''
 		)
-		
-		
-		//val math = resource.allContents.filter(MathExp).next
-		//val result = math.compute
-		//System.out.println("Math expression = "+math.display)
-		//JOptionPane.showMessageDialog(null, "result = "+result,"Math Language", JOptionPane.INFORMATION_MESSAGE)
 	}
 	
 	def compile(MathExp math) {
@@ -160,7 +148,7 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 	def String generatePrivateMethod(ResultStatement r) {
 		'''
 		private int compute«r.label.convertTolegalJavaIdentifier.toFirstUpper»() {
-			return «r.exp.compile(new HashMap<String, Integer>)»;
+			return «r.exp.compile»;
 		}
 		'''
 	}
@@ -187,117 +175,33 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 		return validIdentifier
 	}
 	
-	def String compile(Expression exp, Map<String,Integer> env) {
+	def String compile(Expression exp) {
 		"(" + switch (exp) {
-			Plus: '''«exp.left.compile(env)»+«exp.right.compile(env)»'''
-			Minus: '''«exp.left.compile(env)»-«exp.right.compile(env)»'''
-			Mult: '''«exp.left.compile(env)»*«exp.right.compile(env)»'''
-			Div: '''«exp.left.compile(env)»/«exp.right.compile(env)»'''
+			Plus: '''«exp.left.compile»+«exp.right.compile»'''
+			Minus: '''«exp.left.compile»-«exp.right.compile»'''
+			Mult: '''«exp.left.compile»*«exp.right.compile»'''
+			Div: '''«exp.left.compile»/«exp.right.compile»'''
 			Num: '''«exp.value»'''
-			Var: '''t''' //'''«env.get(exp.id)»'''
+			Var: '''t''' // t is the variable used by the generated java-code for let expressions below
 			Let: {
 				'''
 				new Function<Integer, Integer>() {
 					@Override
 					public Integer apply(Integer t) {
-						return «exp.body.compile(env)»;
+						return «exp.body.compile»;
 					}
-				}.apply(«exp.binding.compile(env)»)'''
+				}.apply(«exp.binding.compile»)'''
 			}
 			ExternalUse: {
 				val extArguments = new StringBuilder()
 				for (extExp : exp.arguments) {
 					if (extArguments.length > 0) extArguments.append(", ")
-					extArguments.append("(").append(extExp.compile(env)).append(")")
+					extArguments.append("(").append(extExp.compile).append(")")
 				}
 			 	'''externals.«exp.external.name»(«extArguments»)'''
 			 }
 			
 			default: throw new Error("Compile: Invalid expression")
 		} + ")"
-	}
-	
-	def compute(MathExp math) {
-		val results = new HashMap<ResultStatement, Integer>
-		
-		math.declarations.filter(ResultStatement).forEach[ r | {
-			results.put(r, r.exp.computeExp(new HashMap<String, Integer>))
-		}]
-		
-		return results
-	}
-	
-	def prettyPrint(HashMap<ResultStatement, Integer> map) {
-		val displayStrings = new StringBuilder
-		
-		map.forEach[r, i| {
-			displayStrings.append("result \"" + r.label + "\" is " +
-				i + "\n"
-			)
-		}]
-		
-		return displayStrings.toString
-	}
-	
-	def display(MathExp math) {
-		val displayStrings = new StringBuilder
-		
-		math.declarations.filter(ResultStatement).forEach[ r | {
-			displayStrings.append(r.exp.displayExp() + "\n"
-			)
-		}]
-		
-		return displayStrings.toString
-	}
-	
-	//
-	// Compute function: computes value of expression
-	// Note: written according to illegal left-recursive grammar, requires fix
-	//
-	
-	//def int compute(MathExp math) {
-	//	math.exp.computeExp(new HashMap<String,Integer>)
-	//}
-	
-	def int computeExp(Expression exp, Map<String,Integer> env) {
-		switch exp {
-			Plus: exp.left.computeExp(env)+exp.right.computeExp(env)
-			Minus: exp.left.computeExp(env)-exp.right.computeExp(env)
-			Mult: exp.left.computeExp(env)*exp.right.computeExp(env)
-			Div: exp.left.computeExp(env)/exp.right.computeExp(env)
-			Num: exp.value
-			Var: env.get(exp.id)
-			Let: exp.body.computeExp(env.bind(exp.id,exp.binding.computeExp(env)))
-			default: throw new Error("Compute: Invalid expression")
-		}
-	}
-	
-	def Map<String, Integer> bind(Map<String, Integer> env1, String name, int value) {
-		val env2 = new HashMap<String,Integer>(env1)
-		env2.put(name,value)
-		env2 
-	}
-
-	//
-	// Display function: show complete syntax tree
-	// Note: written according to illegal left-recursive grammar, requires fix
-	//
-
-	//def String display(MathExp math) { 
-	//	math.exp.displayExp
-	//}
-
-	
-	def String displayExp(Expression exp) {
-		"("+switch exp {
-			Plus: exp.left.displayExp+"+"+exp.right.displayExp
-			Minus: exp.left.displayExp+"-"+exp.right.displayExp
-			Mult: exp.left.displayExp+"*"+exp.right.displayExp
-			Div: exp.left.displayExp+"/"+exp.right.displayExp
-			Num: Integer.toString(exp.value)
-			Var: exp.id
-			Let: '''let «exp.id» = «exp.binding.displayExp» in «exp.body.displayExp» end'''
-			default: throw new Error("Invalid expression")
-		}+")"
 	}
 }

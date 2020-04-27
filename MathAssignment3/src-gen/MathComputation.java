@@ -1,6 +1,15 @@
 /*
 * AUTO-GENERATED CODE!
 */
+
+/*
+* Imports
+*/
+import java.util.function.Function;
+
+/*
+* Class
+*/
 public class MathComputation {
 	
 	/*

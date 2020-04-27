@@ -18,11 +18,7 @@ import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Parameter;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Plus;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.ResultStatement;
 import dk.sdu.mmmi.mdsd.mathAssignmentLanguage.Var;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -335,9 +331,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.append("return ");
-    Expression _exp = r.getExp();
-    HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
-    String _compile = this.compile(_exp, _hashMap);
+    String _compile = this.compile(r.getExp());
     _builder.append(_compile, "\t");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
@@ -366,16 +360,16 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     return validIdentifier;
   }
   
-  public String compile(final Expression exp, final Map<String, Integer> env) {
+  public String compile(final Expression exp) {
     CharSequence _switchResult = null;
     boolean _matched = false;
     if (exp instanceof Plus) {
       _matched=true;
       StringConcatenation _builder = new StringConcatenation();
-      String _compile = this.compile(((Plus)exp).getLeft(), env);
+      String _compile = this.compile(((Plus)exp).getLeft());
       _builder.append(_compile);
       _builder.append("+");
-      String _compile_1 = this.compile(((Plus)exp).getRight(), env);
+      String _compile_1 = this.compile(((Plus)exp).getRight());
       _builder.append(_compile_1);
       _switchResult = _builder;
     }
@@ -383,10 +377,10 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       if (exp instanceof Minus) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        String _compile = this.compile(((Minus)exp).getLeft(), env);
+        String _compile = this.compile(((Minus)exp).getLeft());
         _builder.append(_compile);
         _builder.append("-");
-        String _compile_1 = this.compile(((Minus)exp).getRight(), env);
+        String _compile_1 = this.compile(((Minus)exp).getRight());
         _builder.append(_compile_1);
         _switchResult = _builder;
       }
@@ -395,10 +389,10 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       if (exp instanceof Mult) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        String _compile = this.compile(((Mult)exp).getLeft(), env);
+        String _compile = this.compile(((Mult)exp).getLeft());
         _builder.append(_compile);
         _builder.append("*");
-        String _compile_1 = this.compile(((Mult)exp).getRight(), env);
+        String _compile_1 = this.compile(((Mult)exp).getRight());
         _builder.append(_compile_1);
         _switchResult = _builder;
       }
@@ -407,10 +401,10 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       if (exp instanceof Div) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        String _compile = this.compile(((Div)exp).getLeft(), env);
+        String _compile = this.compile(((Div)exp).getLeft());
         _builder.append(_compile);
         _builder.append("/");
-        String _compile_1 = this.compile(((Div)exp).getRight(), env);
+        String _compile_1 = this.compile(((Div)exp).getRight());
         _builder.append(_compile_1);
         _switchResult = _builder;
       }
@@ -446,7 +440,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
         _builder.newLine();
         _builder.append("\t\t");
         _builder.append("return ");
-        String _compile = this.compile(((Let)exp).getBody(), env);
+        String _compile = this.compile(((Let)exp).getBody());
         _builder.append(_compile, "\t\t");
         _builder.append(";");
         _builder.newLineIfNotEmpty();
@@ -454,7 +448,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
         _builder.append("}");
         _builder.newLine();
         _builder.append("}.apply(");
-        String _compile_1 = this.compile(((Let)exp).getBinding(), env);
+        String _compile_1 = this.compile(((Let)exp).getBinding());
         _builder.append(_compile_1);
         _builder.append(")");
         _switchResult = _builder;
@@ -474,7 +468,7 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
               if (_greaterThan) {
                 extArguments.append(", ");
               }
-              extArguments.append("(").append(this.compile(extExp, env)).append(")");
+              extArguments.append("(").append(this.compile(extExp)).append(")");
             }
           }
           StringConcatenation _builder = new StringConcatenation();
@@ -491,182 +485,6 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
     }
     if (!_matched) {
       throw new Error("Compile: Invalid expression");
-    }
-    String _plus = ("(" + _switchResult);
-    return (_plus + ")");
-  }
-  
-  public HashMap<ResultStatement, Integer> compute(final MathExp math) {
-    final HashMap<ResultStatement, Integer> results = new HashMap<ResultStatement, Integer>();
-    final Consumer<ResultStatement> _function = (ResultStatement r) -> {
-      Expression _exp = r.getExp();
-      HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
-      results.put(r, Integer.valueOf(this.computeExp(_exp, _hashMap)));
-    };
-    Iterables.<ResultStatement>filter(math.getDeclarations(), ResultStatement.class).forEach(_function);
-    return results;
-  }
-  
-  public String prettyPrint(final HashMap<ResultStatement, Integer> map) {
-    final StringBuilder displayStrings = new StringBuilder();
-    final BiConsumer<ResultStatement, Integer> _function = (ResultStatement r, Integer i) -> {
-      String _label = r.getLabel();
-      String _plus = ("result \"" + _label);
-      String _plus_1 = (_plus + "\" is ");
-      String _plus_2 = (_plus_1 + i);
-      String _plus_3 = (_plus_2 + "\n");
-      displayStrings.append(_plus_3);
-    };
-    map.forEach(_function);
-    return displayStrings.toString();
-  }
-  
-  public String display(final MathExp math) {
-    final StringBuilder displayStrings = new StringBuilder();
-    final Consumer<ResultStatement> _function = (ResultStatement r) -> {
-      String _displayExp = this.displayExp(r.getExp());
-      String _plus = (_displayExp + "\n");
-      displayStrings.append(_plus);
-    };
-    Iterables.<ResultStatement>filter(math.getDeclarations(), ResultStatement.class).forEach(_function);
-    return displayStrings.toString();
-  }
-  
-  public int computeExp(final Expression exp, final Map<String, Integer> env) {
-    Integer _switchResult = null;
-    boolean _matched = false;
-    if (exp instanceof Plus) {
-      _matched=true;
-      int _computeExp = this.computeExp(((Plus)exp).getLeft(), env);
-      int _computeExp_1 = this.computeExp(((Plus)exp).getRight(), env);
-      _switchResult = Integer.valueOf((_computeExp + _computeExp_1));
-    }
-    if (!_matched) {
-      if (exp instanceof Minus) {
-        _matched=true;
-        int _computeExp = this.computeExp(((Minus)exp).getLeft(), env);
-        int _computeExp_1 = this.computeExp(((Minus)exp).getRight(), env);
-        _switchResult = Integer.valueOf((_computeExp - _computeExp_1));
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Mult) {
-        _matched=true;
-        int _computeExp = this.computeExp(((Mult)exp).getLeft(), env);
-        int _computeExp_1 = this.computeExp(((Mult)exp).getRight(), env);
-        _switchResult = Integer.valueOf((_computeExp * _computeExp_1));
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Div) {
-        _matched=true;
-        int _computeExp = this.computeExp(((Div)exp).getLeft(), env);
-        int _computeExp_1 = this.computeExp(((Div)exp).getRight(), env);
-        _switchResult = Integer.valueOf((_computeExp / _computeExp_1));
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Num) {
-        _matched=true;
-        _switchResult = Integer.valueOf(((Num)exp).getValue());
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Var) {
-        _matched=true;
-        _switchResult = env.get(((Var)exp).getId());
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Let) {
-        _matched=true;
-        _switchResult = Integer.valueOf(this.computeExp(((Let)exp).getBody(), this.bind(env, ((Let)exp).getId(), this.computeExp(((Let)exp).getBinding(), env))));
-      }
-    }
-    if (!_matched) {
-      throw new Error("Compute: Invalid expression");
-    }
-    return (_switchResult).intValue();
-  }
-  
-  public Map<String, Integer> bind(final Map<String, Integer> env1, final String name, final int value) {
-    HashMap<String, Integer> _xblockexpression = null;
-    {
-      final HashMap<String, Integer> env2 = new HashMap<String, Integer>(env1);
-      env2.put(name, Integer.valueOf(value));
-      _xblockexpression = env2;
-    }
-    return _xblockexpression;
-  }
-  
-  public String displayExp(final Expression exp) {
-    CharSequence _switchResult = null;
-    boolean _matched = false;
-    if (exp instanceof Plus) {
-      _matched=true;
-      String _displayExp = this.displayExp(((Plus)exp).getLeft());
-      String _plus = (_displayExp + "+");
-      String _displayExp_1 = this.displayExp(((Plus)exp).getRight());
-      _switchResult = (_plus + _displayExp_1);
-    }
-    if (!_matched) {
-      if (exp instanceof Minus) {
-        _matched=true;
-        String _displayExp = this.displayExp(((Minus)exp).getLeft());
-        String _plus = (_displayExp + "-");
-        String _displayExp_1 = this.displayExp(((Minus)exp).getRight());
-        _switchResult = (_plus + _displayExp_1);
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Mult) {
-        _matched=true;
-        String _displayExp = this.displayExp(((Mult)exp).getLeft());
-        String _plus = (_displayExp + "*");
-        String _displayExp_1 = this.displayExp(((Mult)exp).getRight());
-        _switchResult = (_plus + _displayExp_1);
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Div) {
-        _matched=true;
-        String _displayExp = this.displayExp(((Div)exp).getLeft());
-        String _plus = (_displayExp + "/");
-        String _displayExp_1 = this.displayExp(((Div)exp).getRight());
-        _switchResult = (_plus + _displayExp_1);
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Num) {
-        _matched=true;
-        _switchResult = Integer.toString(((Num)exp).getValue());
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Var) {
-        _matched=true;
-        _switchResult = ((Var)exp).getId();
-      }
-    }
-    if (!_matched) {
-      if (exp instanceof Let) {
-        _matched=true;
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("let ");
-        String _id = ((Let)exp).getId();
-        _builder.append(_id);
-        _builder.append(" = ");
-        String _displayExp = this.displayExp(((Let)exp).getBinding());
-        _builder.append(_displayExp);
-        _builder.append(" in ");
-        String _displayExp_1 = this.displayExp(((Let)exp).getBody());
-        _builder.append(_displayExp_1);
-        _builder.append(" end");
-        _switchResult = _builder;
-      }
-    }
-    if (!_matched) {
-      throw new Error("Invalid expression");
     }
     String _plus = ("(" + _switchResult);
     return (_plus + ")");
