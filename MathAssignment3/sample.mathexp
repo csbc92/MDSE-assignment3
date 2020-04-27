@@ -8,27 +8,44 @@ result "This_is 2nd calculation" is 210 * 10 + 35 + (5 - (2 - 1))
 
 result "this is my 3rd calculation" is 1 + power(2, 3) * sqrt(9)
 
-// 7
-//result "First value" is
-//let myVar = 1+2 in
-//	let x = myVar*2 in
-//		x + 1
-//	end
-//end
+// 14
+result "First value" is
+let myVar = 1+2 in
+	2 * let x = myVar*2 in
+		x + 1
+	end
+end
+
+// 10
+result "This is my calc 2" is 1 + (6 / 3) * 5 - let x = 1 in x end
+
+// 13
+result "another calc" is
+let x = 2 * 5 + 4 / 2 in x + 1 end
 
 // 9
-//result "Second value" is
-//let myVar = 2+2 in
-//	let x = myVar*2 in
-//		x + 1
-//	end
-//end
+result "Second value" is
+let myVar = 2+2 in
+	let x = myVar*2 in
+		x + 1
+	end
+end
 
 // 11
-//result "Third value" is
-//let myVar = 3+2 in
-//	let x = myVar*2 in
-//		x + 1
-//	end
-//end
-//* 1
+result "Third value" is
+let myVar = 3+2 in
+	let x = myVar*2 in
+		x + 1
+	end
+end
+* 1
+
+
+
+result "Third value2" is
+let myVar = 3+2 * sqrt(9) in
+	let x = myVar*2 + power(myVar, 2) in
+		x + 1 * sqrt(4)
+	end
+end
+* 1
