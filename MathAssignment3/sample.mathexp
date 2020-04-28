@@ -2,29 +2,34 @@ type int
 external power(int a, int b)
 external sqrt(int a)
 
-result "This is my calc 1" is 1 + (6 / 3) * 5 - 2
+result "Basic arithmetics 1" is 1 + (6 / 3) * 5 - 2
 
-result "This_is 2nd calculation" is 210 * 10 + 35 + (5 - (2 - 1))
+result "Basic arithmetics 2" is 210 * 10 + 35 + (5 - (2 - 1))
 
-result "this is my 3rd calculation" is 1 + power(2, 3) * sqrt(9)
+result "External functions" is 1 + power(2, 3) * sqrt(9)
 
 // 14
-result "First value" is
+result "Functional style 1" is
 let myVar = 1+2 in
 	2 * let x = myVar*2 in
 		x + 1
 	end
 end
 
-// 10
-result "This is my calc 2" is 1 + (6 / 3) * 5 - let x = 1 in x end
+// 21
+result "Functional style 2" is
+let myVar = 1+2 in
+	3 * let x = myVar*2 in
+		x + 1
+	end
+end
 
 // 13
-result "another calc" is
+result "Functional style 3" is
 let x = 2 * 5 + 4 / 2 in x + 1 end
 
 // 9
-result "Second value" is
+result "Functional style 4" is
 let myVar = 2+2 in
 	let x = myVar*2 in
 		x + 1
@@ -32,7 +37,7 @@ let myVar = 2+2 in
 end
 
 // 11
-result "Third value" is
+result "Functional style 5" is
 let myVar = 3+2 in
 	let x = myVar*2 in
 		x + 1
@@ -40,12 +45,22 @@ let myVar = 3+2 in
 end
 * 1
 
-
-
-result "Third value2" is
-let myVar = 3+2 * sqrt(9) in
-	let x = myVar*2 + power(myVar, 2) in
-		x + 1 * sqrt(4)
+// 10
+result "Functional style nested variable scope" is
+let x = 1+2 in
+	let x = x*x in
+		x + 1
 	end
 end
-* 1
+
+// 10
+result "Functional style in-line" is 1 + (6 / 3) * 5 - let x = 1 in x end
+
+// 202
+result "Functional style + external functions" is
+let myVar = 3+2 * sqrt(9) in // 9
+	let x = myVar*2 + power(myVar, 2) in // 18 + 81
+		x + 1 * sqrt(4) // 99 + 2
+	end
+end
+* 2

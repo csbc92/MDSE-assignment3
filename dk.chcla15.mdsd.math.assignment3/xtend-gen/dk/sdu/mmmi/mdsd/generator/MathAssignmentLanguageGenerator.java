@@ -422,7 +422,8 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
       if (exp instanceof Var) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        _builder.append("t");
+        String _id = ((Var)exp).getId();
+        _builder.append(_id);
         _switchResult = _builder;
       }
     }
@@ -436,8 +437,11 @@ public class MathAssignmentLanguageGenerator extends AbstractGenerator {
         _builder.append("@Override");
         _builder.newLine();
         _builder.append("\t");
-        _builder.append("public Integer apply(Integer t) {");
-        _builder.newLine();
+        _builder.append("public Integer apply(Integer ");
+        String _id = ((Let)exp).getId();
+        _builder.append(_id, "\t");
+        _builder.append(") {");
+        _builder.newLineIfNotEmpty();
         _builder.append("\t\t");
         _builder.append("return ");
         String _compile = this.compile(((Let)exp).getBody());
