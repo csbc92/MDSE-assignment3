@@ -11,6 +11,8 @@ The individual tasks are listed below:
 ## Status of Assignment
 The math compiler is able to handle all of the aforementioned tasks. That is; (1) multiple mathematical expressions, (2) generate the Java-class, (3) supports external functions and (4) supports functional-style variable assignments. The functional-style variable assignments was solved by using the Function-interface from Java to deal with scoping.
 
+[Click to go to github repo](https://github.com/csbc92/MDSE-assignment3)
+
 ## Xtext File
 [Click to see xtext-file on github](https://github.com/csbc92/MDSE-assignment3/blob/master/dk.chcla15.mdsd.math.assignment3/src/dk/chcla15/mdsd/math/assignment3/MathExp.xtext)
 
