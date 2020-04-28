@@ -268,12 +268,12 @@ class MathAssignmentLanguageGenerator extends AbstractGenerator {
 			Mult: '''«exp.left.compile»*«exp.right.compile»'''
 			Div: '''«exp.left.compile»/«exp.right.compile»'''
 			Num: '''«exp.value»'''
-			Var: '''t''' // t is the variable used by the generated java-code for let expressions below
+			Var: '''«exp.id»''' // id is the variable used by the generated java-code for let expressions below
 			Let: {
 				'''
 				new Function<Integer, Integer>() {
 					@Override
-					public Integer apply(Integer t) {
+					public Integer apply(Integer «exp.id») {
 						return «exp.body.compile»;
 					}
 				}.apply(«exp.binding.compile»)'''
